@@ -44,6 +44,14 @@ for (let step = 0; step < 5; step++) {
   }
 */
 
+router.get('/allusers', (req, res, next) => { 
+    db.query("SELECT * FROM users",
+ function(err, result) {if (err) throw err;
+    
+     res.status(200).json(result)
+      });
+    });
+
 router.get('/exercices', (req, res, next) => { 
     db.query("SELECT * FROM Exercice",
  function(err, result) {if (err) throw err;
