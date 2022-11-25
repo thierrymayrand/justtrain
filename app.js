@@ -25,7 +25,7 @@ app.use((req, res, next) => {
 });
 
 
+const PORT = 3000;
 
-
-app.listen(3000, () => {console.log("Serveur a l'ecoute") })
+app.listen(PORT, () => {console.log("Serveur a l'ecoute ${PORT}") })
 
