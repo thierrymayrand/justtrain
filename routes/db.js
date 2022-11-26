@@ -142,23 +142,8 @@ router.get('/workout', (req, res) => {
                                
                                
                               });
-                             
-                              db.query(`SELECT * FROM Workout WHERE id NOT IN ( 
-                                SELECT workoutId FROM exercicetoworkout
-                                JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
-                                JOIN Movement ON Exercice.movementId = Movement.id
-                                JOIN modality ON Movement.modalityId = modality.id
-                                WHERE nomModal IN ("Gymnastic")
-                                GROUP BY workoutId
-                                )
-                                ORDER BY RAND() LIMIT 1; 
-                                ;`, (err, result) => {
-                                if (err) throw err
-                                else {
-                                    console.log(result)
-                                    res.status(200).json(result[0])
-                                }
-                              })
+                              res.status(200).json(result[0])
+                              
                            
                             
                         }
