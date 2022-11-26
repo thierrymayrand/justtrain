@@ -119,7 +119,7 @@ router.get('/workout', (req, res) => {
                   
                     db.query(`# GET WORKOUT AND EXCLUDE MODALIT
 
-                    SELECT workout.id, rounds, timeInSec, typeName FROM workout
+                    SELECT workout.id, rounds as numberOfRounds, timeInSec, typeName as workoutType FROM workout
                     JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
                     WHERE workout.id NOT IN (
                     SELECT workoutID FROM ExerciceToWorkout
