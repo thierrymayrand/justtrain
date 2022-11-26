@@ -21,28 +21,7 @@ db.connect(function(err) {
     if (err) throw err;
     console.log("Connecte a la base de donne MySql!");
 })
-   /*
-for (let step = 0; step < 10; step++) {
-    // Runs 5 times, with values of step 0 through 4.
-    const workoutId = step + 38
-    const rounds = Math.floor(Math.random() * 4) + 2;
-    db.query(`INSERT INTO ExerciceToWorkout (exerciceId, workoutId)  SELECT Exercice.id, ${workoutId} FROM Exercice
-    JOIN Movement ON movementId = Movement.id
-    JOIN Equipment ON equipmentId = Equipment.id
-    WHERE Equipment.id = 3 OR Equipment.id = 5
-    ORDER BY RAND () 
-    LIMIT 3
-    ;`)
-  }
-  */
-
-  /*
-for (let step = 0; step < 5; step++) {
-    // Runs 5 times, with values of step 0 through 4.
-    
-    db.query(`INSERT INTO Workout(workoutType, numberOfRounds) VALUES ("FOR TIME", ${rounds});`)
-  }
-*/
+   
 
 router.get('/allusers', (req, res, next) => { 
     db.query("SELECT * FROM users",
@@ -61,14 +40,14 @@ router.get('/exercices', (req, res, next) => {
     });
 
     // Create new user with uid -> POST 
-router.post('/user', (req, res, next) => {
+router.post('/users', (req, res, next) => {
     const query = 4
     const id = `${req.body.user.toString()}`
     const userName = req.body.userName
     const lastName = req.body.lastName
     const email = req.body.email
   console.log(req.body.user)
-  db.query(`INSERT INTO AppUser (id, userName, lastName, email) VALUES ("${id}","${userName}", "${lastName}", "${email}");`)
+  db.query(`INSERT INTO users (id, userName, lastName, email) VALUES ("${id}","${userName}", "${lastName}", "${email}");`)
   res.status(300)
 });
 
