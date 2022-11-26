@@ -117,27 +117,21 @@ router.get('/workout', (req, res) => {
                        
                       });
                   
-                    db.query(`SELECT modalite, COUNT(*) as modaliteCount  FROM (
-                        SELECT DISTINCT Workout.id as workoutId, Modalite.nomModal as modalite
-                         FROM ExerciceToWorkout
-                        JOIN Workout ON ExerciceToWorkout.workoutId = Workout.id 
+                    db.query(`SELECT * FROM workout WHERE id NOT IN (
+                        SELECT workoutID FROM ExerciceToWorkout
                         JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
                         JOIN Movement ON Exercice.movementId = Movement.id
-                        JOIN Modalite ON Movement.modaliteID = Modalite.id
-                        
-                        WHERE workoutId = ${last2Workout[0].workoutId}
-                        UNION ALL 
-                        SELECT DISTINCT Workout.id as workoutId, Modalite.nomModal as modalite
-                         FROM ExerciceToWorkout
-                        JOIN Workout ON ExerciceToWorkout.workoutId = Workout.id 
+                        WHERE modaliteId IN (
+                        SELECT modalId FROM (SELECT Movement.modaliteId as modalId, COUNT(*) AS modalCount FROM (SELECT * FROM UserCompletedWod WHERE userId = "1" LIMIT 2) as table1
+                        JOIN Workout ON workoutId = Workout.id
+                        JOIN ExerciceToWorkout ON Workout.id = ExerciceToWorkout.workoutId
                         JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
                         JOIN Movement ON Exercice.movementId = Movement.id
-                        JOIN Modalite ON Movement.modaliteID = Modalite.id
-                        WHERE workoutId = ${last2Workout[1].workoutId}
-                        ) as AllModalite
-                        GROUP BY modalite
-                        HAVING modaliteCount >= 2
-                        ;`, (err, result, fields) => {
+                        GROUP BY Movement.modaliteId) as table2
+                        WHERE modalCount > 2
+                        )
+                        GROUP BY workoutID
+                        );`, (err, result, fields) => {
                         if (err) console.log(err.message)
                         else {
                             Object.keys(result).forEach(function(key) {
@@ -150,13 +144,14 @@ router.get('/workout', (req, res) => {
                               });
                              
                               db.query(`SELECT * FROM Workout WHERE id NOT IN ( 
-                                SELECT workoutId FROM ExerciceToWorkout
+                                SELECT workoutId FROM exercicetoworkout
                                 JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
                                 JOIN Movement ON Exercice.movementId = Movement.id
-                                JOIN Modalite ON Movement.modaliteID = Modalite.id
+                                JOIN modality ON Movement.modalityId = modality.id
                                 WHERE nomModal IN ("Gymnastic")
-                                GROUP BY workoutId)
-                                ORDER BY RAND() LIMIT 1
+                                GROUP BY workoutId
+                                )
+                                ORDER BY RAND() LIMIT 1; 
                                 ;`, (err, result) => {
                                 if (err) throw err
                                 else {
