@@ -303,7 +303,6 @@ router.get('/modalrepetition', (req, res) => {
     function(err, result) {if (err) throw err;
         res.status(200).json(result)
        
-        
     });
 });
 
