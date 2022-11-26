@@ -47,7 +47,7 @@ router.post('/users', (req, res) => {
     const firstName = req.body.firstName
     const lastName = req.body.lastName
     const email = req.body.email
-  db.query(`INSERT INTO users (id, firstName, lastName, email) VALUES ("${id}","${firstName}", "${lastName}", "${email}");`,function(err, result) {if (err) throw err;
+  db.query(`INSERT INTO appuser (id, firstName, lastName, email) VALUES ("${id}","${firstName}", "${lastName}", "${email}");`,function(err, result) {if (err) throw err;
     res.status(200)
   })
   
@@ -57,7 +57,7 @@ router.post('/users', (req, res) => {
 router.get('/user', (req, res) => {
     const userId = req.query.id.toString()
  
-  db.query(`SELECT * FROM users WHERE id = "${userId}";`,
+  db.query(`SELECT * FROM appuser WHERE id = "${userId}";`,
   function(err, result) {if (err) throw err;
     res.status(200).json(result[0])
   })
