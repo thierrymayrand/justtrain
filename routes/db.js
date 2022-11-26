@@ -104,7 +104,7 @@ router.get('/workout', (req, res) => {
     const last2Workout = []
     const workouts = []
     const userId = `${req.body.id.toString()}`
-    db.query(`SELECT COUNT(*) as workoutCount FROM UserCompletedWod WHERE userId = "1";`, (err, result) => {
+    db.query(`SELECT COUNT(*) as workoutCount FROM UserCompletedWod WHERE userId = "${userId}";`, (err, result) => {
         if (err) console.log(err.message)
         else console.log("Workout count of the user is " + result[0].workoutCount)
         const workoutCount = parseInt(result[0].workoutCount)
@@ -129,7 +129,7 @@ router.get('/workout', (req, res) => {
                     JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
                     JOIN Movement ON Exercice.movementId = Movement.id
                     WHERE modaliteId IN (
-                    SELECT modalId FROM (SELECT Movement.modaliteId as modalId, COUNT(*) AS modalCount FROM (SELECT * FROM UserCompletedWod WHERE userId = "1" LIMIT 2) as table1
+                    SELECT modalId FROM (SELECT Movement.modaliteId as modalId, COUNT(*) AS modalCount FROM (SELECT * FROM UserCompletedWod WHERE userId = "${userId}" LIMIT 2) as table1
                     JOIN Workout ON workoutId = Workout.id
                     JOIN ExerciceToWorkout ON Workout.id = ExerciceToWorkout.workoutId
                     JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
