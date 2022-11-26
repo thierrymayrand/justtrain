@@ -46,7 +46,7 @@ router.post('/users', (req, res) => {
     const firstName = req.body.firstName
     const lastName = req.body.lastName
     const email = req.body.email
-  db.query(`INSERT INTO users (id, firstName, lastName, email) VALUES ("${id}","${userName}", "${lastName}", "${email}");`,function(err, result) {if (err) throw err;
+  db.query(`INSERT INTO users (id, firstName, lastName, email) VALUES ("${id}","${firstName}", "${lastName}", "${email}");`,function(err, result) {if (err) throw err;
     res.status(200)
   })
   
