@@ -259,6 +259,7 @@ router.get('/finisherfrommodal', (req, res) => {
     });
 });
 
+
 router.get('/modalite', (req, res) => {
     const userId = req.query.id.toString()
     db.query(`SELECT Modalite.id FROM AppUser JOIN JourMatrice ON jourMatriceId = JourMatrice.id JOIN Modalite ON JourMatrice.modaliteId = Modalite.id WHERE AppUser.id = "${userId}" LIMIT 1;`,
