@@ -117,23 +117,27 @@ router.get('/workout', (req, res) => {
                        
                       });
                   
-                    db.query(`SELECT * FROM workout WHERE id NOT IN (
-                        SELECT workoutID FROM ExerciceToWorkout
-                        JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
-                        JOIN Movement ON Exercice.movementId = Movement.id
-                        WHERE modaliteId IN (
-                        SELECT modalId FROM (SELECT Movement.modaliteId as modalId, COUNT(*) AS modalCount FROM (SELECT * FROM UserCompletedWod WHERE userId = "1" LIMIT 2) as table1
-                        JOIN Workout ON workoutId = Workout.id
-                        JOIN ExerciceToWorkout ON Workout.id = ExerciceToWorkout.workoutId
-                        JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
-                        JOIN Movement ON Exercice.movementId = Movement.id
-                        GROUP BY Movement.modaliteId) as table2
-                        WHERE modalCount > 2
-                        )
-                        GROUP BY workoutID 
-                        ORDER BY RAND ()
-                        LIMIT 1
-                        ) ;`, (err, result, fields) => {
+                    db.query(`# GET WORKOUT AND EXCLUDE MODALIT
+
+                    SELECT workout.id, rounds, timeInSec, typeName FROM workout
+                    JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
+                    WHERE workout.id NOT IN (
+                    SELECT workoutID FROM ExerciceToWorkout
+                    JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
+                    JOIN Movement ON Exercice.movementId = Movement.id
+                    WHERE modaliteId IN (
+                    SELECT modalId FROM (SELECT Movement.modaliteId as modalId, COUNT(*) AS modalCount FROM (SELECT * FROM UserCompletedWod WHERE userId = "1" LIMIT 2) as table1
+                    JOIN Workout ON workoutId = Workout.id
+                    JOIN ExerciceToWorkout ON Workout.id = ExerciceToWorkout.workoutId
+                    JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
+                    JOIN Movement ON Exercice.movementId = Movement.id
+                    GROUP BY Movement.modaliteId) as table2
+                    WHERE modalCount > 2
+                    )
+                    GROUP BY workoutID 
+                    )
+                    ORDER BY RAND ()
+                    LIMIT 1;`, (err, result, fields) => {
                         if (err) console.log(err.message)
                         else {
                             Object.keys(result).forEach(function(key) {
