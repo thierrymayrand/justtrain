@@ -25,7 +25,7 @@ db.connect(function(err) {
    
 
 router.get('/allusers', (req, res, next) => { 
-    db.query("SELECT * FROM users",
+    db.query("SELECT * FROM appuser",
  function(err, result) {if (err) throw err;
     
      res.status(200).json(result)
