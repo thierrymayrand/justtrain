@@ -130,8 +130,10 @@ router.get('/workout', (req, res) => {
                         GROUP BY Movement.modaliteId) as table2
                         WHERE modalCount > 2
                         )
-                        GROUP BY workoutID
-                        );`, (err, result, fields) => {
+                        GROUP BY workoutID 
+                        ORDER BY RAND ()
+                        LIMIT 1
+                        ) ;`, (err, result, fields) => {
                         if (err) console.log(err.message)
                         else {
                             Object.keys(result).forEach(function(key) {
