@@ -103,14 +103,14 @@ router.get('/workout', (req, res) => {
     const modalite = []
     const last2Workout = []
     const workouts = []
-   
+    const userId = `${req.body.id.toString()}`
     db.query(`SELECT COUNT(*) as workoutCount FROM UserCompletedWod WHERE userId = "1";`, (err, result) => {
         if (err) console.log(err.message)
         else console.log("Workout count of the user is " + result[0].workoutCount)
         const workoutCount = parseInt(result[0].workoutCount)
         if(workoutCount >= 2)  {
             console.log("equal to 2 or greater")
-            db.query(`SELECT * FROM UserCompletedWod WHERE userId = "1" LIMIT 2;`, (err, result, fields) => {
+            db.query(`SELECT * FROM UserCompletedWod WHERE userId = "${userId}" LIMIT 2;`, (err, result, fields) => {
                 if (err) console.log(err.message)
                 else {
                     Object.keys(result).forEach(function(key) {
