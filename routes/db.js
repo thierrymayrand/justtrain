@@ -306,6 +306,7 @@ router.get('/modalrepetition', (req, res) => {
     });
 });
 
+
 router.get('/getexpectedtime', (req, res) => {
     wodId = req.query.id.toString()
     db.query(`SELECT exerciceTime * (SELECT Workout.numberOfRounds AS numberRounds FROM ExerciceToWorkout
