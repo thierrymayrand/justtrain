@@ -274,7 +274,6 @@ router.get('/wodfunctions', (req, res) => {
     db.query(`SELECT Functions.functionName as id, SUM(rep) as totalRep FROM ExerciceToWorkout
     JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
     JOIN Movement ON movementId = Movement.id
-    JOIN Equipment ON equipmentId = Equipment.id
     JOIN Modalite ON modaliteId = Modalite.id
     JOIN MovementFunction ON Movement.id = MovementFunction.movementId
     JOIN Functions ON MovementFunction.functionId = Functions.id
