@@ -57,7 +57,7 @@ router.post('/users', (req, res) => {
 router.get('/user', (req, res) => {
     const userId = req.query.id.toString()
  
-  db.query(`SELECT * FROM AppUser WHERE id = "${userId}";`,
+  db.query(`SELECT * FROM users WHERE id = "${userId}";`,
   function(err, result) {if (err) throw err;
     res.status(200).json(result[0])
   })
