@@ -103,7 +103,7 @@ router.get('/workout', (req, res) => {
     const modalite = []
     const last2Workout = []
     const workouts = []
-    const userId = `${req.body.id.toString()}`
+    const userId = req.body.id.toString()
     db.query(`SELECT COUNT(*) as workoutCount FROM UserCompletedWod WHERE userId = "${userId}";`, (err, result) => {
         if (err) console.log(err.message)
         else console.log("Workout count of the user is " + result[0].workoutCount)
