@@ -40,15 +40,16 @@ router.get('/exercices', (req, res, next) => {
     });
 
     // Create new user with uid -> POST 
-router.post('/users', (req, res, next) => {
-    const query = 4
+router.post('/users', (req, res) => {
+    
     const id = `${req.body.user.toString()}`
-    const firstName = req.body.userName
+    const firstName = req.body.firstName
     const lastName = req.body.lastName
     const email = req.body.email
-  console.log(req.body.user)
-  db.query(`INSERT INTO users (id, firstName, lastName, email) VALUES ("${id}","${userName}", "${lastName}", "${email}");`)
-  res.status(300)
+  db.query(`INSERT INTO users (id, firstName, lastName, email) VALUES ("${id}","${userName}", "${lastName}", "${email}");`,function(err, result) {if (err) throw err;
+    res.status(200)
+  })
+  
 });
 
 // GET THE CURRENT USER
