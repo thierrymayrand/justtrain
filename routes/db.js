@@ -315,7 +315,6 @@ router.get('/getexpectedtime', (req, res) => {
         JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
         JOIN Workout ON ExerciceToWorkout.workoutId = Workout.id
         JOIN Movement ON movementId = Movement.id
-        JOIN Equipment ON equipmentId = Equipment.id
         WHERE workoutId = ${wodId}
         ) as myTable 
          ;`,
