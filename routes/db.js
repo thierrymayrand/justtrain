@@ -43,11 +43,11 @@ router.get('/exercices', (req, res, next) => {
 router.post('/users', (req, res, next) => {
     const query = 4
     const id = `${req.body.user.toString()}`
-    const userName = req.body.userName
+    const firstName = req.body.userName
     const lastName = req.body.lastName
     const email = req.body.email
   console.log(req.body.user)
-  db.query(`INSERT INTO users (id, userName, lastName, email) VALUES ("${id}","${userName}", "${lastName}", "${email}");`)
+  db.query(`INSERT INTO users (id, firstName, lastName, email) VALUES ("${id}","${userName}", "${lastName}", "${email}");`)
   res.status(300)
 });
 
