@@ -60,9 +60,9 @@ router.get('/user', (req, res) => {
   db.query(`SELECT * FROM appuser WHERE id = "${userId}";`, (err, result, fields) => {
     if (err) console.log(err.message)
     else {
-        console.log(result)
-        res.status(200).json(result[0])
-      }
+    console.log(result)
+    res.status(200).json(result[0])
+  }
    })
 });
  
