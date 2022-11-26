@@ -106,7 +106,7 @@ router.get('/workout', (req, res) => {
     const userId = req.body.id
     db.query(`SELECT COUNT(*) as workoutCount FROM UserCompletedWod WHERE userId = "${userId}";`, (err, result) => {
         if (err) console.log(err.message)
-        else console.log("Workout count of the user is " + result[0].workoutCount)
+        else console.log("Workout count of the user is " + result[0])
         const workoutCount = parseInt(result[0].workoutCount)
         if(workoutCount >= 2)  {
             console.log("equal to 2 or greater")
