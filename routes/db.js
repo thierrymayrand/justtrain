@@ -166,12 +166,11 @@ router.get('/workout', (req, res) => {
 
 router.get('/getexercices', (req, res) => {
     const id = req.query.id
-    db.query(`SELECT Exercice.id as id, rep, title, equipmentName, nomModal  FROM ExerciceToWorkout
-        JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
-        JOIN Movement ON movementId = Movement.id
-        JOIN Equipment ON equipmentId = Equipment.id
-        JOIN Modalite ON modaliteId = Modalite.id
-        WHERE workoutId = ${id};`,
+    db.query(`SELECT Exercice.id as id, rep, title, nomModal  FROM ExerciceToWorkout
+    JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
+    JOIN Movement ON movementId = Movement.id
+    JOIN Modalite ON modaliteId = Modalite.id
+    WHERE workoutId = ${id}`,
     function(err, result) { if (err) throw err; 
            
             console.log(result)
