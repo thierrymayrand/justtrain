@@ -149,14 +149,9 @@ router.get('/getexercices', (req, res) => {
 router.get('/warmup', (req, res) => {
     let warmUpId = 0
     
-    db.query(` Select * FROM Workout WHERE Workout.id NOT IN (SELECT workoutId FROM ExerciceToWorkout
-        JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
-        JOIN Movement ON movementId = Movement.id
-        JOIN Equipment ON equipmentId = Equipment.id
-        WHERE equipmentId != 3 AND equipmentId != 5
-        GROUP BY workoutId)
-        ORDER BY RAND()
-        LIMIT 1;`,
+    db.query(` Select * FROM workout WHERE workoutTypeId = 3
+ORDER BY RAND()
+LIMIT 1;`,
     function(err, result) {if (err) throw err;
         warmUpId = result[0].id
         console.log(warmUpId)
