@@ -273,7 +273,7 @@ router.get('/getexpectedtime', (req, res) => {
     wodId = req.query.id
     db.query(`SELECT exerciceTime * (SELECT Workout.rounds AS numberOfRounds FROM ExerciceToWorkout
         JOIN Workout ON ExerciceToWorkout.workoutId = Workout.id
-        WHERE workoutId = 20 LIMIT 1) as expectedTime  FROM (
+        WHERE workoutId = ${wodId} LIMIT 1) as expectedTime  FROM (
          SELECT SUM( Movement.timeInSec * Exercice.rep) as exerciceTime FROM ExerciceToWorkout
         JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
         JOIN Workout ON ExerciceToWorkout.workoutId = Workout.id
