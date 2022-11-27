@@ -100,35 +100,17 @@ router.post('/wodcompleted', (req, res, next) => {
 
 
 router.get('/workout', (req, res) => {
-    const modalite = []
-    const last2Workout = []
-    const workouts = []
     const userId = req.body.id
-    db.query(`SELECT COUNT(*) as workoutCount FROM UserCompletedWod WHERE userId = "${userId}";`, (err, result) => {
-        if (err) console.log(err.message)
-        else console.log("Workout count of the user is " + result[0])
-        const workoutCount = parseInt(result[0].workoutCount)
-        if(workoutCount >= 2)  {
-            console.log("equal to 2 or greater")
-            db.query(`SELECT * FROM UserCompletedWod WHERE userId = "${userId}" LIMIT 2;`, (err, result, fields) => {
-                if (err) console.log(err.message)
-                else {
-                    Object.keys(result).forEach(function(key) {
-                        var row = result[key];
-                       
-                        last2Workout.push(row)
-                       
-                      });
-                  
-                    db.query(`# GET WORKOUT AND EXCLUDE MODALIT
-
-                    SELECT workout.id, rounds as numberOfRounds, timeInSec, typeName as workoutType FROM workout
+                    db.query(`# GET WORKOUT AND EXCLUDE MODALITE
+                    SELECT workout.id, rounds, timeInSec, typeName FROM workout
                     JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
                     WHERE workout.id NOT IN (
+                    # GIVES ALL THE WORKOUT THAT CONTAINS MODALITY PRESENT IN THE LAST TWO WORKOUT
                     SELECT workoutID FROM ExerciceToWorkout
                     JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
                     JOIN Movement ON Exercice.movementId = Movement.id
                     WHERE modaliteId IN (
+                    #GIVES THE MODAL ID PRESENT IN THE LAST TWO WOKOUT
                     SELECT modalId FROM (SELECT Movement.modaliteId as modalId, COUNT(*) AS modalCount FROM (SELECT * FROM UserCompletedWod WHERE userId = "${userId}" LIMIT 2) as table1
                     JOIN Workout ON workoutId = Workout.id
                     JOIN ExerciceToWorkout ON Workout.id = ExerciceToWorkout.workoutId
@@ -141,31 +123,14 @@ router.get('/workout', (req, res) => {
                     )
                     ORDER BY RAND ()
                     LIMIT 1;`, (err, result, fields) => {
+
                         if (err) console.log(err.message)
                         else {
-                            Object.keys(result).forEach(function(key) {
-                                var row = result[key];
-                               
-                                modalite.push(row.modalite)
-                                console.log(row)
-                               
-                               
-                              });
-                              res.status(200).json(result[0])
-                              
-                           
-                            
+                              res.status(200).json(result[0]) 
                         }
-                    })
-                }
-            })
-            
-        } else {
-            console.log("lower than 2")
-        }
-    })
-  
-});
+                    });
+                });
+                   
 
 router.get('/getexercices', (req, res) => {
     const id = req.query.id
