@@ -111,7 +111,7 @@ router.get('/workout', (req, res) => {
                     JOIN Movement ON Exercice.movementId = Movement.id
                     WHERE modaliteId IN (
                     #GIVES THE MODAL ID PRESENT IN THE LAST TWO WOKOUT
-                    SELECT modalId FROM (SELECT Movement.modaliteId as modalId, COUNT(*) AS modalCount FROM (SELECT * FROM UserCompletedWod WHERE userId = "${userId}" LIMIT 2) as table1
+                    SELECT modalId FROM (SELECT Movement.modaliteId as modalId, COUNT(*) AS modalCount FROM (SELECT * FROM UserCompletedWod WHERE userId = "${userId}" ORDER BY id LIMIT 2) as table1
                     JOIN Workout ON workoutId = Workout.id
                     JOIN ExerciceToWorkout ON Workout.id = ExerciceToWorkout.workoutId
                     JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
