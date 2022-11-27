@@ -121,6 +121,7 @@ router.get('/workout', (req, res) => {
                     )
                     GROUP BY workoutID 
                     )
+                    WHERE workoutTypeId != 3
                     ORDER BY RAND ()
                     LIMIT 1;`, (err, result, fields) => {
 
