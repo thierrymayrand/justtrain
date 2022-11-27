@@ -270,7 +270,7 @@ router.get('/modalrepetition', (req, res) => {
 
 
 router.get('/getexpectedtime', (req, res) => {
-    wodId = req.query.id.toString()
+    wodId = req.query.id
     db.query(`SELECT exerciceTime * (SELECT Workout.rounds AS numberOfRounds FROM ExerciceToWorkout
         JOIN Workout ON ExerciceToWorkout.workoutId = Workout.id
         WHERE workoutId = 20 LIMIT 1) as expectedTime  FROM (
