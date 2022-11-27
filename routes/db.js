@@ -102,7 +102,7 @@ router.post('/wodcompleted', (req, res, next) => {
 router.get('/workout', (req, res) => {
     const userId = req.body.id
                     db.query(`# GET WORKOUT AND EXCLUDE MODALITE
-                    SELECT workout.id, rounds, timeInSec, typeName FROM workout
+                    SELECT workout.id, rounds, timeInSec, typeName as workoutType FROM workout
                     JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
                     WHERE workout.id NOT IN (
                     # GIVES ALL THE WORKOUT THAT CONTAINS MODALITY PRESENT IN THE LAST TWO WORKOUT
