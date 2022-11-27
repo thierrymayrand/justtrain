@@ -149,7 +149,7 @@ router.get('/getexercices', (req, res) => {
 router.get('/warmup', (req, res) => {
     let warmUpId = 0
     
-    db.query(` Select * FROM workout WHERE workoutTypeId = 3
+    db.query(` Select workout.id, rounds, timeInSec, typeName as workoutType FROM workout WHERE workoutTypeId = 3
 ORDER BY RAND()
 LIMIT 1;`,
     function(err, result) {if (err) throw err;
