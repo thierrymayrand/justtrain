@@ -192,12 +192,12 @@ router.get('/workout', (req, res) => {
                                                     excludedWodId.push(row.workoutId)
                                                     
                                                 })
-                                                db.query(`select id from workout where id not in (${excludedWodId}) ORDER BY RAND()
+                                                db.query(`select workout.id, rounds AS numberOfRounds, timeInSec, typeName as workoutType from workout where id not in (${excludedWodId}) ORDER BY RAND()
                                                 LIMIT 1 ;`, (err, result, fields) => {
                                                     if (err) console.log(err.message)
                                                     else {
                                                         console.log(result)
-                                                        
+                                                        res.status(200).json(result[0]) 
                                                         
                                                     }
                                                 })
@@ -250,7 +250,7 @@ router.get('/workout', (req, res) => {
 
                     if (err) console.log(err.message)
                     else {
-                          res.status(200).json(result[0]) 
+                         
                     }
                 });
             }
