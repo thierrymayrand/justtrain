@@ -102,7 +102,7 @@ router.post('/wodcompleted', (req, res, next) => {
 router.get('/workout', (req, res) => {
     const userId = req.body.id
     const excludedWodId = [];
-    const last6under15min = 0
+    var last6under15min = 0
     db.query(`select workoutId from (
         select workoutId, count(*) as modalCount from workout 
         JOIN exercicetoworkout ON workout.id = exercicetoworkout.workoutId
