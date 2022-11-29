@@ -136,8 +136,10 @@ router.get('/workout', (req, res) => {
 
             if (err) console.log(err.message)
             else {
-                  excludedWodId.push(result) 
-                  console.log(excludedWodId) 
+                result.forEach(function(row) {
+                    console.log(row)
+                })
+                  
             }
         })
                     db.query(`# GET WORKOUT AND EXCLUDE MODALITE
