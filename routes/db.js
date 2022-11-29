@@ -190,9 +190,9 @@ router.get('/workout', (req, res) => {
                                                 
                     
                                                     excludedWodId.push(row.workoutId)
-                                                    console.log(excludedWodId[-1])
+                                                    
                                                 })
-                                               
+                                                console.log(excludedWodId)
                                             }
                                         })
                                     }
@@ -208,7 +208,7 @@ router.get('/workout', (req, res) => {
                                             }
                                         })
                                     }
-                    console.log(excludedWodId)
+                    
                                 }
                             })
                         }
