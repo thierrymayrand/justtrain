@@ -101,6 +101,45 @@ router.post('/wodcompleted', (req, res, next) => {
 
 router.get('/workout', (req, res) => {
     const userId = req.body.id
+    const excludedWodId = [];
+    db.query(`select workoutId from (
+        select workoutId, count(*) as modalCount from workout 
+        JOIN exercicetoworkout ON workout.id = exercicetoworkout.workoutId
+        JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+        JOIN movement ON exercice.movementId = movement.id
+        GROUP BY workoutId, modaliteId
+        HAVING modalCount IN (select * from (
+        select modalityCount from (
+        select count(*) as timesOfOccurance, modalityCount as modalityCount from (
+        select count(*) as modalityCount from (select workoutId, modaliteId from exercicetoworkout 
+        JOIN exercice on exercicetoworkout.exerciceId = exercice.id
+        JOIN movement on exercice.movementId = movement.id
+        where workoutId IN (
+        select * from (
+        select workoutId from usercompletedwod
+        WHERE workoutId >= 205 and userId="tHV0mtFjkCfZMuEJ59qfdYvhPlO2"
+        limit 6
+        ) as workoutscompletedbyuser
+        )
+        group by workoutId, modaliteId) as table2
+        group by workoutId
+        ) as modalitycountperworkout
+        
+        group by modalityCount
+        ) as newTable
+        where (modalityCount = 1 
+        and timesOfOccurance >=2) 
+        or  (modalityCount = 2 
+        and timesOfOccurance >=3) or (modalityCount = 3 and timesOfOccurance >=2)
+        )as modalitieToExclude) 
+        )as derivedTable;`,  (err, result, fields) => {
+
+            if (err) console.log(err.message)
+            else {
+                  excludedWodId.push(result) 
+                  console.log(excludedWodId) 
+            }
+        })
                     db.query(`# GET WORKOUT AND EXCLUDE MODALITE
                     SELECT workout.id, rounds AS numberOfRounds, timeInSec, typeName as workoutType FROM workout
                     JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
