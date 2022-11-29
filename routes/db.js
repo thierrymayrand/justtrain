@@ -164,7 +164,7 @@ router.get('/workout', (req, res) => {
                                 if (err) console.log(err.message)
                                 else {
                                     countover15 = result[0].countover15
-                                    console.log(countwodunder15, "under 15")
+                                    console.log(last6under15min, "under 15")
                                     console.log(countover15, "over 15")
                                     console.log(countwodunder7, "under 7")
                                 }
