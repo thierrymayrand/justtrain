@@ -187,9 +187,10 @@ router.get('/workout', (req, res) => {
                                             else {
                                                 console.log(result)
                                                 result.forEach(function(row) {
-                                                console.log(row.workoutId)
+                                                
                     
                                                     excludedWodId.push(row.workoutId)
+                                                    console.log(excludedWodId[-1])
                                                 })
                                                
                                             }
