@@ -137,40 +137,53 @@ router.get('/workout', (req, res) => {
             if (err) console.log(err.message)
             else {
                 result.forEach(function(row) {
-                    console.log(row.workoutId)
+                    
+                    excludedWodId.push(row.workoutId)
                 })
-                  
+                db.query(`select count(*) as countwodunder15 from usercompletedwod
+                join workout on workoutId = workout.id
+                WHERE workoutId >= 205 and userId="tHV0mtFjkCfZMuEJ59qfdYvhPlO2" and timeInSec < 15 * 60
+                limit 6;`, (err, result, fields) => {
+                    if (err) console.log(err.message)
+                    else {
+                        result.forEach(function(row) {
+                            console.log(row.countwodunder15)
+                        })
+                    }
+                })
+
+                db.query(`# GET WORKOUT AND EXCLUDE MODALITE
+                SELECT workout.id, rounds AS numberOfRounds, timeInSec, typeName as workoutType FROM workout
+                JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
+                WHERE workout.id NOT IN (
+                # GIVES ALL THE WORKOUT THAT CONTAINS MODALITY PRESENT IN THE LAST TWO WORKOUT
+                SELECT workoutID FROM ExerciceToWorkout
+                JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
+                JOIN Movement ON Exercice.movementId = Movement.id
+                WHERE modaliteId IN (
+                #GIVES THE MODAL ID PRESENT IN THE LAST TWO WOKOUT
+                SELECT modalId FROM (SELECT Movement.modaliteId as modalId, COUNT(*) AS modalCount FROM (SELECT * FROM UserCompletedWod WHERE userId = "${userId}" ORDER BY id LIMIT 2) as table1
+                JOIN Workout ON workoutId = Workout.id
+                JOIN ExerciceToWorkout ON Workout.id = ExerciceToWorkout.workoutId
+                JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
+                JOIN Movement ON Exercice.movementId = Movement.id
+                GROUP BY Movement.modaliteId) as table2
+                WHERE modalCount > 2
+                )
+                GROUP BY workoutID 
+                )
+                AND workoutTypeId != 3 AND workoutTypeId != 2
+                ORDER BY RAND ()
+                LIMIT 1;`, (err, result, fields) => {
+
+                    if (err) console.log(err.message)
+                    else {
+                          res.status(200).json(result[0]) 
+                    }
+                });
             }
         })
-                    db.query(`# GET WORKOUT AND EXCLUDE MODALITE
-                    SELECT workout.id, rounds AS numberOfRounds, timeInSec, typeName as workoutType FROM workout
-                    JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
-                    WHERE workout.id NOT IN (
-                    # GIVES ALL THE WORKOUT THAT CONTAINS MODALITY PRESENT IN THE LAST TWO WORKOUT
-                    SELECT workoutID FROM ExerciceToWorkout
-                    JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
-                    JOIN Movement ON Exercice.movementId = Movement.id
-                    WHERE modaliteId IN (
-                    #GIVES THE MODAL ID PRESENT IN THE LAST TWO WOKOUT
-                    SELECT modalId FROM (SELECT Movement.modaliteId as modalId, COUNT(*) AS modalCount FROM (SELECT * FROM UserCompletedWod WHERE userId = "${userId}" ORDER BY id LIMIT 2) as table1
-                    JOIN Workout ON workoutId = Workout.id
-                    JOIN ExerciceToWorkout ON Workout.id = ExerciceToWorkout.workoutId
-                    JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
-                    JOIN Movement ON Exercice.movementId = Movement.id
-                    GROUP BY Movement.modaliteId) as table2
-                    WHERE modalCount > 2
-                    )
-                    GROUP BY workoutID 
-                    )
-                    AND workoutTypeId != 3 AND workoutTypeId != 2
-                    ORDER BY RAND ()
-                    LIMIT 1;`, (err, result, fields) => {
-
-                        if (err) console.log(err.message)
-                        else {
-                              res.status(200).json(result[0]) 
-                        }
-                    });
+                    
                 });
                    
 
