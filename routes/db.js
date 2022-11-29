@@ -143,6 +143,7 @@ router.get('/workout', (req, res) => {
                     
                     excludedWodId.push(row.workoutId)
                 })
+                console.log(excludedWodId)
                 db.query(`select count(*) as countwodunder15 from usercompletedwod
                 join workout on workoutId = workout.id
                 WHERE workoutId >= 205 and userId="tHV0mtFjkCfZMuEJ59qfdYvhPlO2" and timeInSec < 15 * 60
