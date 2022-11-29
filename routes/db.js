@@ -103,6 +103,8 @@ router.get('/workout', (req, res) => {
     const userId = req.body.id
     const excludedWodId = [];
     var last6under15min = 0
+    var countwodunder7 = 0
+    var countover15 = 0
     db.query(`select workoutId from (
         select workoutId, count(*) as modalCount from workout 
         JOIN exercicetoworkout ON workout.id = exercicetoworkout.workoutId
@@ -148,7 +150,27 @@ router.get('/workout', (req, res) => {
                     if (err) console.log(err.message)
                     else {
                       last6under15min =  result[0].countwodunder15
-                      console.log(last6under15min)
+                      db.query(`select count(*) as countwodunder7 from usercompletedwod
+                      join workout on workoutId = workout.id
+                      WHERE workoutId >= 205 and userId="tHV0mtFjkCfZMuEJ59qfdYvhPlO2" and timeInSec <= 7 * 60
+                      limit 6;`, (err, result, fields) => {
+                        if (err) console.log(err.message)
+                        else {
+                            countwodunder7 = result[0].countwodunder7
+                            db.query(`select count(*) as countover15 from usercompletedwod
+                            join workout on workoutId = workout.id
+                            WHERE workoutId >= 205 and userId="tHV0mtFjkCfZMuEJ59qfdYvhPlO2" and timeInSec >= 15 * 60
+                            limit 6;`, (err, result, fields) => {
+                                if (err) console.log(err.message)
+                                else {
+                                    countover15 = result[0].countover15
+                                    console.log(countwodunder15, "under 15")
+                                    console.log(countover15, "over 15")
+                                    console.log(countwodunder7, "under 7")
+                                }
+                            })
+                        }
+                      })
                     }
                 })
 
