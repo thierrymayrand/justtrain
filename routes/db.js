@@ -167,6 +167,43 @@ router.get('/workout', (req, res) => {
                                     console.log(last6under15min, "under 15")
                                     console.log(countover15, "over 15")
                                     console.log(countwodunder7, "under 7")
+                                    if (last6under15min >= 3) {
+                                        db.query(`select id as workoutId from workout where timeinsec < 60 * 15;`, (err, result, fields) => {
+                                            if (err) console.log(err.message)
+                                            else {
+                                                result.forEach(function(row) {
+                    
+                                                    excludedWodId.push(row.workoutId)     
+                                                })
+                                                
+                                            }
+                                        })
+                                    }
+                                    if (countover15 >= 2) {
+                                        db.query(`select id as workoutId from workout where timeinsec >= 60 * 15;`, (err, result, fields) => {
+                                            if (err) console.log(err.message)
+                                            else {
+                                                result.forEach(function(row) {
+                    
+                                                    excludedWodId.push(row.workoutId)
+                                                })
+                                               
+                                            }
+                                        })
+                                    }
+                                    if (countwodunder7 >= 1) {
+                                        db.query(`select id as workoutId from workout where timeinsec < 60 * 1;`, (err, result, fields) => {
+                                            if (err) console.log(err.message)
+                                            else {
+                                                result.forEach(function(row) {
+                    
+                                                    excludedWodId.push(row.workoutId)
+                                                })
+                                               
+                                            }
+                                        })
+                                    }
+                    console.log(excludedWodId)
                                 }
                             })
                         }
