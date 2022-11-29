@@ -137,7 +137,7 @@ router.get('/workout', (req, res) => {
             if (err) console.log(err.message)
             else {
                 result.forEach(function(row) {
-                    console.log(row)
+                    console.log(row.workoutId)
                 })
                   
             }
