@@ -101,7 +101,7 @@ router.post('/wodcompleted', (req, res, next) => {
 
 router.get('/workout', (req, res) => {
     const userId = req.body.id
-    const excludedWodId = [];
+    const excludedWodId = Array();
     var last6under15min = 0
     var countwodunder7 = 0
     var countover15 = 0
@@ -192,7 +192,14 @@ router.get('/workout', (req, res) => {
                                                     excludedWodId.push(row.workoutId)
                                                     
                                                 })
-                                                console.log(excludedWodId)
+                                                db.query(`select id from workout where id not in ${excludedWodId};`, (err, result, fields) => {
+                                                    if (err) console.log(err.message)
+                                                    else {
+                                                        console.log(result)
+                                                        
+                                                        
+                                                    }
+                                                })
                                             }
                                         })
                                     }
