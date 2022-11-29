@@ -192,7 +192,7 @@ router.get('/workout', (req, res) => {
                                                     excludedWodId.push(row.workoutId)
                                                     
                                                 })
-                                                db.query(`select id from workout where id not in ${excludedWodId};`, (err, result, fields) => {
+                                                db.query(`select id from workout where id not in (${excludedWodId});`, (err, result, fields) => {
                                                     if (err) console.log(err.message)
                                                     else {
                                                         console.log(result)
@@ -204,7 +204,7 @@ router.get('/workout', (req, res) => {
                                         })
                                     }
                                     if (countwodunder7 >= 1) {
-                                        db.query(`select id as workoutId from workout where timeinsec < 60 * 1;`, (err, result, fields) => {
+                                        db.query(`select id as workoutId from workout where timeinsec < 60 * 7;`, (err, result, fields) => {
                                             if (err) console.log(err.message)
                                             else {
                                                 result.forEach(function(row) {
