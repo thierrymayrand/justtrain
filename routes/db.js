@@ -498,4 +498,18 @@ router.get('/allgym', (req, res) => {
    })
 });
 
+router.get('/equipfromgym', (req, res) => {
+    const userId = req.query.id
+ 
+  db.query(`select equipment.id as id, title from equipmenttogym 
+  JOIN equipment on equipmentId = equipment.id
+  where gymId = ${userId};`, (err, result, fields) => {
+    if (err) console.log(err.message)
+    else {
+    console.log(result)
+    res.status(200).json(result)
+  }
+   })
+});
+
 module.exports = router;
