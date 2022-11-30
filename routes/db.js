@@ -105,6 +105,26 @@ router.get('/workout', (req, res) => {
     var last6under15min = 0
     var countwodunder7 = 0
     var countover15 = 0
+
+    db.query(`select count(*) as wodwith2modal from (
+        select workoutId, count(*) as modalCount from (
+        select table1.workoutId, modaliteId from (
+                select workoutId from
+                usercompletedwod
+                WHERE usercompletedwod.workoutId >= 205 and userId="tHV0mtFjkCfZMuEJ59qfdYvhPlO2"
+                limit 6) as table1
+                join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
+                JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+                JOIN movement ON exercice.movementId = movement.id
+                GROUP BY table1.workoutId, modaliteId) as table2
+                group by table2.workoutId
+                having modalCount = 2
+        ) as table3;`, (err, result, fields) => {
+            if (err) console.log(err.message)
+            else {
+                
+            }
+    })
     db.query(`select workoutId from (
         select workoutId, count(*) as modalCount from workout 
         JOIN exercicetoworkout ON workout.id = exercicetoworkout.workoutId
@@ -336,6 +356,16 @@ router.get('/wodfrommodal', (req, res) => {
     function(err, result) {if (err) throw err;
         res.status(200).json(result)
         console.log("Le wod est:", result)
+        
+    });
+});
+
+router.get('/allequipmenttype', (req, res) => {
+    modalId = req.query.id.toString()
+    db.query(`SELECT title AS id FROM equipmenttype ;`,
+    function(err, result) {if (err) throw err;
+        res.status(200).json(result)
+        console.log("Les equipements sont", result)
         
     });
 });
