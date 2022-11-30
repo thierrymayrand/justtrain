@@ -361,7 +361,7 @@ router.get('/wodfrommodal', (req, res) => {
 });
 
 router.get('/allequipmenttype', (req, res) => {
-    modalId = req.query.id.toString()
+    
     db.query(`SELECT title AS id FROM equipmenttype ;`,
     function(err, result) {if (err) throw err;
         res.status(200).json(result)
