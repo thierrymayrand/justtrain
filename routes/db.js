@@ -87,12 +87,15 @@ router.get('/averagemodalite', (req, res) => {
 
 // Create a new User Workout item -> POST
 router.post('/wodcompleted', (req, res, next) => {
+    const dateAndTime = new Date().toISOString().slice(0, 19).replace('T', ' ');
+    console.log(`date is ${dateAndTime}`)
     const userId = `${req.body.user.toString()}`
     const workoutId = `${req.body.workoutId.toString()}`
     const result = req.body.result
     const resultPercent = req.body.resultPercent
     const expectedResult = req.body.expectedResult
-    db.query(`INSERT INTO UserCompletedWod  (workoutId, userId, result, resultPercent, expectedResult) VALUES (${workoutId}, "${userId}", ${result}, ${resultPercent}, ${expectedResult});`);
+    
+    db.query(`INSERT INTO UserCompletedWod  (workoutId, userId, result, resultPercent, expectedResult, dateAndTime) VALUES (${workoutId}, "${userId}", ${result}, ${resultPercent}, ${expectedResult}, ${dateAndTime});`);
     
     console.log(req.body.user)
     res.status(300);
