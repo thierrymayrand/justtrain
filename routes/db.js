@@ -464,7 +464,7 @@ router.get('/getexpectedtime', (req, res) => {
 router.post('/creategym', (req, res, next) => {
     const userId = `${req.body.user.toString()}`
     const gymName = req.body.gymName
-    const equipments = req.body.equipment
+    const equipments = req.body.equipments
     db.query(`INSERT INTO gym (gymName) VALUES ("${gymName}")`, (err, result, fields) => {
         if (err) console.log(err.message)
         else {
@@ -473,6 +473,7 @@ router.post('/creategym', (req, res, next) => {
                 if (err) console.log(err.message)
                 else {
                     res.status(300);
+                    console.log(equipments)
                 }
             })
         }
