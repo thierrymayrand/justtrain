@@ -484,4 +484,18 @@ router.post('/creategym', (req, res, next) => {
     
 });
 
+// GET THE CURRENT USER
+router.get('/allgym', (req, res) => {
+    const userId = req.query.id
+ 
+  db.query(`select gymId as id from usertogym
+  JOIN gym on gymId = gym.id WHERE userId = "${userId}";`, (err, result, fields) => {
+    if (err) console.log(err.message)
+    else {
+    console.log(result)
+    res.status(200).json(result[0])
+  }
+   })
+});
+
 module.exports = router;
