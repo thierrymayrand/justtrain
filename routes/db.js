@@ -473,7 +473,7 @@ router.post('/creategym', (req, res, next) => {
                 if (err) console.log(err.message)
                 else {
                     res.status(300);
-                    console.log(equipments)
+                    console.log(equipments[0])
                 }
             })
         }
