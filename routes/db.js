@@ -365,6 +365,18 @@ router.get('/allequipmenttype', (req, res) => {
     db.query(`SELECT title AS id FROM equipmenttype ;`,
     function(err, result) {if (err) throw err;
         res.status(200).json(result)
+        console.log("Les type d'equipements sont", result)
+        
+    });
+});
+
+router.get('/equipfromtype', (req, res) => {
+    typeTitle = req.query.type
+    db.query(`select equipment.id, equipment.title from equipmenttotype 
+    JOIN equipment ON equipmentId = equipment.id
+    where equipmentType = "${typeTitle}";`,
+    function(err, result) {if (err) throw err;
+        res.status(200).json(result)
         console.log("Les equipements sont", result)
         
     });
