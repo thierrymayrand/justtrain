@@ -95,7 +95,7 @@ router.post('/wodcompleted', (req, res, next) => {
     const resultPercent = req.body.resultPercent
     const expectedResult = req.body.expectedResult
     
-    db.query(`INSERT INTO UserCompletedWod  (workoutId, userId, result, resultPercent, expectedResult, dateAndTime) VALUES (${workoutId}, "${userId}", ${result}, ${resultPercent}, ${expectedResult}, ${dateAndTime});`);
+    db.query(`INSERT INTO UserCompletedWod  (workoutId, userId, result, resultPercent, expectedResult, dateAndTime) VALUES (${workoutId}, "${userId}", ${result}, ${resultPercent}, ${expectedResult}, "${dateAndTime}");`);
     
     console.log(req.body.user)
     res.status(300);
