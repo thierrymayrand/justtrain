@@ -99,6 +99,7 @@ router.post('/wodcompleted', (req, res, next) => {
 });
 
 
+
 router.get('/workout', (req, res) => {
     const userId = req.body.id
     const excludedWodId = Array();
@@ -457,6 +458,28 @@ router.get('/getexpectedtime', (req, res) => {
        
         
     });
+});
+
+// Create a new User Workout item -> POST
+router.post('/creategym', (req, res, next) => {
+    const userId = `${req.body.user.toString()}`
+    const gymName = req.body.gymName
+    const equipments = req.body.equipment
+    db.query(`INSERT INTO gym (gymName) VALUES ("${gymName}")`, (err, result, fields) => {
+        if (err) console.log(err.message)
+        else {
+            const gymId = result.insertId
+            db.query(`INSERT INTO usertogym (userId, gymId) VALUES ("${userId}", ${gymId});`, (err, result, fields) => {
+                if (err) console.log(err.message)
+                else {
+                    res.status(300);
+                }
+            })
+        }
+    });
+    
+    
+    
 });
 
 module.exports = router;
