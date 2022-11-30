@@ -493,7 +493,7 @@ router.get('/allgym', (req, res) => {
     if (err) console.log(err.message)
     else {
     console.log(result)
-    res.status(200).json(result[0])
+    res.status(200).json(result)
   }
    })
 });
