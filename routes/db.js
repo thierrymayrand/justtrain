@@ -473,7 +473,8 @@ router.post('/creategym', (req, res, next) => {
                 if (err) console.log(err.message)
                 else {
                     res.status(300);
-                    console.log(equipments[0])
+                    const values = equipments.map (x => `(${x}, ${gymId})`).join (', ');
+                    db.query(`INSERT INTO equipmenttogym (equipmentId, gymId) VALUES ${values}; `)
                 }
             })
         }
