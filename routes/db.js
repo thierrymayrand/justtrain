@@ -104,7 +104,7 @@ router.post('/wodcompleted', (req, res, next) => {
 
 
 router.get('/workout', (req, res) => {
-    const userId = req.body.id
+    const userId = req.body.id.toString()
     const excludedWodId = Array();
     var last6under15min = 0
     var countwodunder7 = 0
