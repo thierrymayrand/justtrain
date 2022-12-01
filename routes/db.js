@@ -110,6 +110,8 @@ router.get('/workout', (req, res) => {
     var countwodunder7 = 0
     var countover15 = 0
     var count2modal = 0
+    var count3moremodal = 0
+    var count1modal = 0
 
     db.query(`select count(*) as wodwith2modal from (
         select workoutId, count(*) as modalCount from (
@@ -128,9 +130,51 @@ router.get('/workout', (req, res) => {
             if (err) console.log(err.message)
             else {
                 count2modal = result[0].wodwith2modal
-                console.log(`${count2modal}`)
+                console.log(`count with 2 modal ${count2modal}`)
 
-                
+                db.query(`select count(*) as wodwith3moremodal from (
+                    select workoutId, count(*) as modalCount from (
+                    select table1.workoutId, modaliteId from (
+                            select workoutId from
+                            usercompletedwod
+                            WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
+                            limit 6) as table1
+                            join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
+                            JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+                            JOIN movement ON exercice.movementId = movement.id
+                            GROUP BY table1.workoutId, modaliteId) as table2
+                            group by table2.workoutId
+                            having modalCount >= 3
+                    ) as table3;`, (err, result, fields) => {
+                        if (err) console.log(err.message)
+                        else {
+                            count3moremodal = result[0].wodwith3moremodal
+                            console.log(`count with 3 modal or more ${count3moremodal}`)
+            
+                            db.query(`select count(*) as wodwith1modal from (
+                                select workoutId, count(*) as modalCount from (
+                                select table1.workoutId, modaliteId from (
+                                        select workoutId from
+                                        usercompletedwod
+                                        WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
+                                        limit 6) as table1
+                                        join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
+                                        JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+                                        JOIN movement ON exercice.movementId = movement.id
+                                        GROUP BY table1.workoutId, modaliteId) as table2
+                                        group by table2.workoutId
+                                        having modalCount = 1
+                                ) as table3;`, (err, result, fields) => {
+                                    if (err) console.log(err.message)
+                                    else {
+                                        count1modal = result[0].wodwith1modal
+                                        console.log(`count with 1 modal ${count1modal}`)
+                        
+                                        db.query(``)
+                                    }
+                            })
+                        }
+                })
             }
     })
     db.query(`select workoutId from (
