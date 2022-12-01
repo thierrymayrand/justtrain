@@ -167,6 +167,7 @@ router.get('/workout', (req, res) => {
                                 ) as table3;`, (err, result, fields) => {
                                     if (err) console.log(err.message)
                                     else {
+                                        console.log(result)
                                         count1modal = result[0].wodwith1modal
                                         console.log(`count with 1 modal ${count1modal}`)
                         
