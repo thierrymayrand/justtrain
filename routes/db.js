@@ -116,7 +116,7 @@ router.get('/workout', (req, res) => {
         select table1.workoutId, modaliteId from (
                 select workoutId from
                 usercompletedwod
-                WHERE usercompletedwod.workoutId >= 205 and userId="tHV0mtFjkCfZMuEJ59qfdYvhPlO2"
+                WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
                 limit 6) as table1
                 join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
                 JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
@@ -129,6 +129,8 @@ router.get('/workout', (req, res) => {
             else {
                 count2modal = result[0].wodwith2modal
                 console.log(`${count2modal}`)
+
+                
             }
     })
     db.query(`select workoutId from (
