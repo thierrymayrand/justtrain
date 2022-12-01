@@ -109,7 +109,7 @@ router.get('/workout', (req, res) => {
     var last6under15min = 0
     var countwodunder7 = 0
     var countover15 = 0
-    const count2modal = 0
+    var count2modal = 0
 
     db.query(`select count(*) as wodwith2modal from (
         select workoutId, count(*) as modalCount from (
