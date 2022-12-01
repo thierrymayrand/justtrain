@@ -260,8 +260,8 @@ router.get('/workout', (req, res) => {
                                     console.log(countover15, "over 15")
                                     console.log(countwodunder7, "under 7")
                                     if (last6under15min >= 3) {
-                                        db.query(`select id as workoutId from workout where timeinsec < 60 * 15;`, (err, result, fields) => {
-                                            if (err) console.log(err.message)
+                                        db.query(`select id as workoutId from workout where timeinsec <= 60 * 15;`, (err, result, fields) => {
+                                            if (err) console.log(err.message)   
                                             else {
                                                 console.log('running under 15 exclusion')
                                                 result.forEach(function(row) {
