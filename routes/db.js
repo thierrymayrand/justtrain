@@ -303,7 +303,7 @@ router.get('/workout', (req, res) => {
                                    
                                     db.query(`select workout.id, rounds AS numberOfRounds, timeInSec, typeName as workoutType from workout 
                                                 JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
-                                                where workout.id not in (${excludedWodId}) ORDER BY RAND()
+                                                where workout.id not in (${excludedWodId}) AND workoutTypeId != 1 AND workoutTypeId = 3 ORDER BY RAND()
                                                 LIMIT 1 ;`, (err, result, fields) => {
                                                     if (err) console.log(err.message)
                                                     else {
