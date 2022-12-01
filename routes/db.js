@@ -274,7 +274,7 @@ router.get('/workout', (req, res) => {
                                     }
                                     if (countover15 >= 2) {
                                         console.log("execute countover15")
-                                        db.query(`select id as workoutId from workout where timeinsec >= 60 * 15;`, (err, result, fields) => {
+                                        db.query(`select id as workoutId from workout where timeinsec >= 60 * 15 OR workoutTypeId = 1 OR workoutTypeId = 3;`, (err, result, fields) => {
                                             if (err) console.log(err.message)
                                             else {
                                                 console.log(result)
