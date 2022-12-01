@@ -171,7 +171,11 @@ router.get('/workout', (req, res) => {
                                         count1modal = result[0].wodwith1modal
                                         console.log(`count with 1 modal ${count1modal}`)
                         
-                                       
+                                       if (count1modal >= 3) {
+                                        db.query(``, (err, result, fields) => {
+
+                                        })
+                                       }
                                     }
                             })
                         }
@@ -217,24 +221,38 @@ router.get('/workout', (req, res) => {
                     excludedWodId.push(row.workoutId)
                 })
                 console.log(excludedWodId)
-                db.query(`select count(*) as countwodunder15 from usercompletedwod
-                join workout on workoutId = workout.id
-                WHERE workoutId >= 205 and userId="tHV0mtFjkCfZMuEJ59qfdYvhPlO2" and timeInSec < 15 * 60
-                limit 6;`, (err, result, fields) => {
+                db.query(` select count(*) as countwodunder15  from (
+                    select * from usercompletedwod
+                where userId = '${userId}'
+          order by dateAndTime desc
+          limit 6
+                ) as compWod
+                join workout on workoutId = workout.id WHERE (expectedResult < 15 * 60  OR (timeInSec < 15 * 60 AND timeInSec != Null)) 
+                ;`, (err, result, fields) => {
                     if (err) console.log(err.message)
                     else {
                       last6under15min =  result[0].countwodunder15
-                      db.query(`select count(*) as countwodunder7 from usercompletedwod
-                      join workout on workoutId = workout.id
-                      WHERE workoutId >= 205 and userId="tHV0mtFjkCfZMuEJ59qfdYvhPlO2" and timeInSec <= 7 * 60
-                      limit 6;`, (err, result, fields) => {
+                      db.query(` select count(*) as countwodunder7  from (
+                        select * from usercompletedwod
+                    where userId = '${userId}'
+              order by dateAndTime desc
+              limit 6
+                    ) as compWod
+                    join workout on workoutId = workout.id WHERE (expectedResult < 7 * 60  OR (timeInSec < 7 * 60 AND timeInSec != Null)) 
+                    ;`, (err, result, fields) => {
                         if (err) console.log(err.message)
                         else {
                             countwodunder7 = result[0].countwodunder7
-                            db.query(`select count(*) as countover15 from usercompletedwod
-                            join workout on workoutId = workout.id
-                            WHERE workoutId >= 205 and userId="tHV0mtFjkCfZMuEJ59qfdYvhPlO2" and timeInSec >= 15 * 60
-                            limit 6;`, (err, result, fields) => {
+
+                            
+                            db.query(`select count(*) as countover15 from (
+                                    select * from usercompletedwod
+                                where userId = '${userId}'
+                          order by dateAndTime desc
+                          limit 6
+                                ) as compWod
+                                join workout on workoutId = workout.id WHERE expectedResult >= 15 * 60 OR timeInSec >= 15 * 60
+                                ;`, (err, result, fields) => {
                                 if (err) console.log(err.message)
                                 else {
                                     countover15 = result[0].countover15
@@ -265,17 +283,7 @@ router.get('/workout', (req, res) => {
                                                     excludedWodId.push(row.workoutId)
                                                     
                                                 })
-                                                db.query(`select workout.id, rounds AS numberOfRounds, timeInSec, typeName as workoutType from workout 
-                                                JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
-                                                where workout.id not in (${excludedWodId}) ORDER BY RAND()
-                                                LIMIT 1 ;`, (err, result, fields) => {
-                                                    if (err) console.log(err.message)
-                                                    else {
-                                                        console.log(result)
-                                                        res.status(200).json(result[0]) 
-                                                        
-                                                    }
-                                                })
+                                                
                                             }
                                         })
                                     }
@@ -291,6 +299,19 @@ router.get('/workout', (req, res) => {
                                             }
                                         })
                                     }
+                                   
+                                    db.query(`select workout.id, rounds AS numberOfRounds, timeInSec, typeName as workoutType from workout 
+                                                JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
+                                                where workout.id not in (${excludedWodId}) ORDER BY RAND()
+                                                LIMIT 1 ;`, (err, result, fields) => {
+                                                    if (err) console.log(err.message)
+                                                    else {
+                                                        console.log(result)
+                                                        console.log(`excluded wod : ${excludedWodId}`) 
+                                                        res.status(200).json(result[0]) 
+                                                        
+                                                    }
+                                                })
                     
                                 }
                             })
