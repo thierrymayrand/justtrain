@@ -170,7 +170,7 @@ router.get('/workout', (req, res) => {
                                         count1modal = result[0].wodwith1modal
                                         console.log(`count with 1 modal ${count1modal}`)
                         
-                                        db.query(``)
+                                       
                                     }
                             })
                         }
