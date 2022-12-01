@@ -109,6 +109,7 @@ router.get('/workout', (req, res) => {
     var last6under15min = 0
     var countwodunder7 = 0
     var countover15 = 0
+    const count2modal = 0
 
     db.query(`select count(*) as wodwith2modal from (
         select workoutId, count(*) as modalCount from (
@@ -126,7 +127,8 @@ router.get('/workout', (req, res) => {
         ) as table3;`, (err, result, fields) => {
             if (err) console.log(err.message)
             else {
-                
+                count2modal = result[0].wodwith2modal
+                console.log(`${count2modal}`)
             }
     })
     db.query(`select workoutId from (
