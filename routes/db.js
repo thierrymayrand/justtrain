@@ -104,7 +104,7 @@ router.post('/wodcompleted', (req, res, next) => {
 
 
 router.get('/workout', (req, res) => {
-    const userId = `${req.body.id.toString()}`
+    const userId = req.body.id
     const excludedWodId = Array();
     var last6under15min = 0
     var countwodunder7 = 0
@@ -167,7 +167,7 @@ router.get('/workout', (req, res) => {
                                 ) as table3;`, (err, result, fields) => {
                                     if (err) console.log(err.message)
                                     else {
-                                        console.log(result)
+                                        console.log(userId)
                                         count1modal = result[0].wodwith1modal
                                         console.log(`count with 1 modal ${count1modal}`)
                         
