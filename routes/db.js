@@ -263,6 +263,7 @@ async function getWod() {
     res.status(200).json(result[0])
 }
 
+
     async function wait() {
          await  getModalCount()
          await getTimecount()
