@@ -19,7 +19,6 @@ let db;
         }
         let promiseDb = db.promise()
 
-
 db.connect(function(err) { 
     if (err) throw err;
     console.log("Connecte a la base de donne MySql!");
