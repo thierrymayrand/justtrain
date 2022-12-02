@@ -1,21 +1,24 @@
+const { query } = require('express');
 const express = require('express');
 const router = express.Router();
 
-const mysql = require('mysql')
+const mysql = require('mysql2')
 
 let db;
 
 
-if (process.env.JAWSDB_URL) {
-db = mysql.createConnection(process.env.JAWSDB_URL);
-} else {
-     db = mysql.createConnection({ 
-        host: "localhost",
-         user: "admin",
-          password: "thierry90",
-           database: "fitland" 
-        });
-}
+    if (process.env.JAWSDB_URL) {
+        db = mysql.createConnection(process.env.JAWSDB_URL);
+        } else {
+             db = mysql.createConnection({ 
+                host: "eyvqcfxf5reja3nv.cbetxkdyhwsb.us-east-1.rds.amazonaws.com",
+                 user: "cj2s4bwby81owhj1",
+                  password: "i66exp46tnb1wj1c",
+                   database: "u3n248k3vnb52hku" 
+                });
+        }
+        let promiseDb = db.promise()
+
 
 
 db.connect(function(err) { 
@@ -69,8 +72,10 @@ router.get('/user', (req, res) => {
 
 // GET THE MODALITY AVERAGE
 router.get('/averagemodalite', (req, res) => {
-    const userId = req.query.id.toString()
- 
+    const userId = req.query.id
+
+   
+
   db.query(`SELECT Modalite.id,  Modalite.nomModal, AVG(resultPercent) as averagePercent FROM UserCompletedWod 
   JOIN ExerciceToWorkout ON UserCompletedWod.workoutId = ExerciceToWorkout.workoutId
   JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
@@ -104,254 +109,187 @@ router.post('/wodcompleted', (req, res, next) => {
 
 
 router.get('/workout', (req, res) => {
-    const userId = req.query.id.toString()
+    const userId = req.query.id
     const excludedWodId = Array();
-    var last6under15min = 0
-    var countwodunder7 = 0
-    var countover15 = 0
+    var countminunder15 = 0
+    var countminunder7 = 0
+    var countminover15 = 0
     var count2modal = 0
-    var count3moremodal = 0
+    var count3modal = 0
     var count1modal = 0
 
-    db.query(`select count(*) as wodwith2modal from (
-        select workoutId, count(*) as modalCount from (
-        select table1.workoutId, modaliteId from (
-                select workoutId from
-                usercompletedwod
-                WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
-                limit 6) as table1
-                join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
-                JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
-                JOIN movement ON exercice.movementId = movement.id
-                GROUP BY table1.workoutId, modaliteId) as table2
-                group by table2.workoutId
-                having modalCount = 2
-        ) as table3;`, (err, result, fields) => {
-            if (err) console.log(err.message)
-            else {
-                count2modal = result[0].wodwith2modal
-                console.log(`count with 2 modal ${count2modal}`)
+    async function getModalCount() {
+        const listCount2Modal = await promiseDb.query(`select count(*) as wodwith2modal from (
+            select workoutId, count(*) as modalCount from (
+            select table1.workoutId, modaliteId from (
+                    select workoutId from
+                    usercompletedwod
+                    WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
+                    limit 6) as table1
+                    join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
+                    JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+                    JOIN movement ON exercice.movementId = movement.id
+                    GROUP BY table1.workoutId, modaliteId) as table2
+                    group by table2.workoutId
+                    having modalCount = 2
+            ) as table3;`);
+      
+        count2modal = listCount2Modal[0][0].wodwith2modal
+       
 
-                db.query(`select count(*) as wodwith3moremodal from (
-                    select workoutId, count(*) as modalCount from (
-                    select table1.workoutId, modaliteId from (
-                            select workoutId from
-                            usercompletedwod
-                            WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
-                            limit 6) as table1
-                            join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
-                            JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
-                            JOIN movement ON exercice.movementId = movement.id
-                            GROUP BY table1.workoutId, modaliteId) as table2
-                            group by table2.workoutId
-                            having modalCount >= 3
-                    ) as table3;`, (err, result, fields) => {
-                        if (err) console.log(err.message)
-                        else {
-                            count3moremodal = result[0].wodwith3moremodal
-                            console.log(`count with 3 modal or more ${count3moremodal}`)
-            
-                            db.query(`select count(*) as wodwith1modal from (
-                                select workoutId, count(*) as modalCount from (
-                                select table1.workoutId, modaliteId from (
-                                        select workoutId from
-                                        usercompletedwod
-                                        WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
-                                        limit 6) as table1
-                                        join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
-                                        JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
-                                        JOIN movement ON exercice.movementId = movement.id
-                                        GROUP BY table1.workoutId, modaliteId) as table2
-                                        group by table2.workoutId
-                                        having modalCount = 1
-                                ) as table3;`, (err, result, fields) => {
-                                    if (err) console.log(err.message)
-                                    else {
-                                        console.log(userId)
-                                        count1modal = result[0].wodwith1modal
-                                        console.log(`count with 1 modal ${count1modal}`)
-                        
-                                       if (count1modal >= 3) {
-                                        db.query(``, (err, result, fields) => {
-
-                                        })
-                                       }
-                                    }
-                            })
-                        }
-                })
-            }
-    })
-    db.query(`select workoutId from (
-        select workoutId, count(*) as modalCount from workout 
-        JOIN exercicetoworkout ON workout.id = exercicetoworkout.workoutId
-        JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
-        JOIN movement ON exercice.movementId = movement.id
-        GROUP BY workoutId, modaliteId
-        HAVING modalCount IN (select * from (
-        select modalityCount from (
-        select count(*) as timesOfOccurance, modalityCount as modalityCount from (
-        select count(*) as modalityCount from (select workoutId, modaliteId from exercicetoworkout 
-        JOIN exercice on exercicetoworkout.exerciceId = exercice.id
-        JOIN movement on exercice.movementId = movement.id
-        where workoutId IN (
-        select * from (
-        select workoutId from usercompletedwod
-        WHERE workoutId >= 205 and userId="tHV0mtFjkCfZMuEJ59qfdYvhPlO2"
-        limit 6
-        ) as workoutscompletedbyuser
-        )
-        group by workoutId, modaliteId) as table2
-        group by workoutId
-        ) as modalitycountperworkout
+        const listCount3Modal = await promiseDb.query(`select count(*) as wodwith3modal from (
+            select workoutId, count(*) as modalCount from (
+            select table1.workoutId, modaliteId from (
+                    select workoutId from
+                    usercompletedwod
+                    WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
+                    limit 6) as table1
+                    join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
+                    JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+                    JOIN movement ON exercice.movementId = movement.id
+                    GROUP BY table1.workoutId, modaliteId) as table2
+                    group by table2.workoutId
+                    having modalCount >= 3
+            ) as table3;`);
         
-        group by modalityCount
-        ) as newTable
-        where (modalityCount = 1 
-        and timesOfOccurance >=2) 
-        or  (modalityCount = 2 
-        and timesOfOccurance >=3) or (modalityCount = 3 and timesOfOccurance >=2)
-        )as modalitieToExclude) 
-        )as derivedTable;`,  (err, result, fields) => {
+        count3modal = listCount3Modal[0][0].wodwith3modal
+        
 
-            if (err) console.log(err.message)
-            else {
-                result.forEach(function(row) {
-                    
-                    excludedWodId.push(row.workoutId)
-                })
-                console.log(excludedWodId)
-                db.query(` select count(*) as countwodunder15  from (
-                    select * from usercompletedwod
-                where userId = '${userId}'
-          order by dateAndTime desc
-          limit 6
-                ) as compWod
-                join workout on workoutId = workout.id WHERE (expectedResult < 15 * 60  OR (timeInSec < 15 * 60 AND timeInSec != Null)) 
-                ;`, (err, result, fields) => {
-                    if (err) console.log(err.message)
-                    else {
-                      last6under15min =  result[0].countwodunder15
-                      db.query(` select count(*) as countwodunder7  from (
-                        select * from usercompletedwod
-                    where userId = '${userId}'
-              order by dateAndTime desc
-              limit 6
-                    ) as compWod
-                    join workout on workoutId = workout.id WHERE (expectedResult < 7 * 60  OR (timeInSec < 7 * 60 AND timeInSec != Null)) 
-                    ;`, (err, result, fields) => {
-                        if (err) console.log(err.message)
-                        else {
-                            countwodunder7 = result[0].countwodunder7
+        const listCount1Modal = await promiseDb.query(`select count(*) as wodwith1modal from (
+            select workoutId, count(*) as modalCount from (
+            select table1.workoutId, modaliteId from (
+                    select workoutId from
+                    usercompletedwod
+                    WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
+                    limit 6) as table1
+                    join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
+                    JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+                    JOIN movement ON exercice.movementId = movement.id
+                    GROUP BY table1.workoutId, modaliteId) as table2
+                    group by table2.workoutId
+                    having modalCount = 1
+            ) as table3;`);
+        
+        count1modal = listCount1Modal[0][0].wodwith1modal
+       
 
-                            
-                            db.query(`select count(*) as countover15 from (
-                                    select * from usercompletedwod
-                                where userId = '${userId}'
-                          order by dateAndTime desc
-                          limit 6
-                                ) as compWod
-                                join workout on workoutId = workout.id WHERE expectedResult >= 15 * 60 OR timeInSec >= 15 * 60
-                                ;`, (err, result, fields) => {
-                                if (err) console.log(err.message)
-                                else {
-                                    countover15 = result[0].countover15
-                                    console.log(last6under15min, "under 15")
-                                    console.log(countover15, "over 15")
-                                    console.log(countwodunder7, "under 7")
-                                    if (last6under15min >= 3) {
-                                        db.query(`select id as workoutId from workout where timeinsec <= 60 * 15 OR workoutTypeId = 1 OR workoutTypeId = 3;;`, (err, result, fields) => {
-                                            if (err) console.log(err.message)   
-                                            else {
-                                                console.log('running under 15 exclusion')
-                                                result.forEach(function(row) {
-                    
-                                                    excludedWodId.push(row.workoutId)     
-                                                })
-                                                
-                                            }
-                                        })
-                                    }
-                                    if (countover15 >= 2) {
-                                        console.log("execute countover15")
-                                        db.query(`select id as workoutId from workout where timeinsec >= 60 * 15 OR workoutTypeId = 1 OR workoutTypeId = 3;`, (err, result, fields) => {
-                                            if (err) console.log(err.message)
-                                            else {
-                                                console.log(result)
-                                                result.forEach(function(row) {
-                                                
-                    
-                                                    excludedWodId.push(row.workoutId)
-                                                    
-                                                })
-                                                
-                                            }
-                                        })
-                                    }
-                                    if (countwodunder7 >= 1) {
-                                        db.query(`select id as workoutId from workout where timeinsec < 60 * 7;`, (err, result, fields) => {
-                                            if (err) console.log(err.message)
-                                            else {
-                                                result.forEach(function(row) {
-                    
-                                                    excludedWodId.push(row.workoutId)
-                                                })
-                                               
-                                            }
-                                        })
-                                    }
-                                   
-                                    db.query(`select workout.id, rounds AS numberOfRounds, timeInSec, typeName as workoutType from workout 
-                                                JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
-                                                where workout.id not in (${excludedWodId}) AND workoutTypeId != 1 AND workoutTypeId != 3 ORDER BY RAND()
-                                                LIMIT 1 ;`, (err, result, fields) => {
-                                                    if (err) console.log(err.message)
-                                                    else {
-                                                        console.log(result)
-                                                        console.log(`excluded wod : ${excludedWodId}`) 
-                                                        res.status(200).json(result[0]) 
-                                                        
-                                                    }
-                                                })
-                    
-                                }
-                            })
-                        }
-                      })
-                    }
-                })
 
-                db.query(`# GET WORKOUT AND EXCLUDE MODALITE
-                SELECT workout.id, rounds AS numberOfRounds, timeInSec, typeName as workoutType FROM workout
-                JOIN WorkoutType ON Workout.workoutTypeId = WorkoutType.id
-                WHERE workout.id NOT IN (
-                # GIVES ALL THE WORKOUT THAT CONTAINS MODALITY PRESENT IN THE LAST TWO WORKOUT
-                SELECT workoutID FROM ExerciceToWorkout
-                JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
-                JOIN Movement ON Exercice.movementId = Movement.id
-                WHERE modaliteId IN (
-                #GIVES THE MODAL ID PRESENT IN THE LAST TWO WOKOUT
-                SELECT modalId FROM (SELECT Movement.modaliteId as modalId, COUNT(*) AS modalCount FROM (SELECT * FROM UserCompletedWod WHERE userId = "${userId}" ORDER BY id LIMIT 2) as table1
-                JOIN Workout ON workoutId = Workout.id
-                JOIN ExerciceToWorkout ON Workout.id = ExerciceToWorkout.workoutId
-                JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
-                JOIN Movement ON Exercice.movementId = Movement.id
-                GROUP BY Movement.modaliteId) as table2
-                WHERE modalCount > 2
-                )
-                GROUP BY workoutID 
-                )
-                AND workoutTypeId != 3 AND workoutTypeId != 2
-                ORDER BY RAND ()
-                LIMIT 1;`, (err, result, fields) => {
+    }
 
-                    if (err) console.log(err.message)
-                    else {
-                         
-                    }
-                });
-            }
+    async function getTimecount() {
+        const countminunder15list = await promiseDb.query(`select count(*) as countwodunder15  from (
+            select * from usercompletedwod
+        where userId = '${userId}'
+  order by dateAndTime desc
+  limit 6
+        ) as compWod
+        join workout on workoutId = workout.id WHERE (expectedResult < 15 * 60  OR (timeInSec < 15 * 60 AND timeInSec != Null)) 
+        ;`)
+
+        countminunder15 = countminunder15list[0][0].countwodunder15
+
+        const countminover15list = await promiseDb.query(`select count(*) as countwodover15  from (
+            select * from usercompletedwod
+        where userId = '${userId}'
+  order by dateAndTime desc
+  limit 6
+        ) as compWod
+        join workout on workoutId = workout.id WHERE (expectedResult >= 15 * 60  OR (timeInSec < 15 * 60 AND timeInSec != Null)) 
+        ;`)
+
+        countminover15 = countminover15list[0][0].countwodover15
+
+        const countminunder7list = await promiseDb.query(`select count(*) as countwodunder7  from (
+            select * from usercompletedwod
+        where userId = '${userId}'
+  order by dateAndTime desc
+  limit 6
+        ) as compWod
+        join workout on workoutId = workout.id WHERE (expectedResult < 7 * 60  OR (timeInSec < 15 * 60 AND timeInSec != Null)) 
+        ;`)
+        
+        
+        countminunder7 = countminunder7list[0][0].countwodunder7
+        
+    
+    }
+
+
+
+    async function exludedWodLogic(count1modal, count2modal, count3modal, countminunder7, countminunder15, countminover15list) {
+        if (count1modal >= 3) {
+           const wod1modal = await promiseDb.query(`select * from (
+            select workoutId, count(*) as modalCount from (
+            select workoutId, modaliteId from (
+                    select * from workout) as table1
+                    join exercicetoworkout on workoutId = exercicetoworkout.workoutId
+                    JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+                    JOIN movement ON exercice.movementId = movement.id
+                    GROUP BY workoutId, modaliteId) as table2
+                    group by table2.workoutId
+                    having modalCount = 1
+            ) as table3;`)
+           wod1modal[0].forEach(function(row) {         
+            excludedWodId.push(row.workoutId)     
         })
+       
+         console.log("above is the excluded wod")
+        }
+        if (count2modal >= 2) {
+            const wod2modal = await promiseDb.query(`select * from (
+             select workoutId, count(*) as modalCount from (
+             select workoutId, modaliteId from (
+                     select * from workout) as table1
+                     join exercicetoworkout on workoutId = exercicetoworkout.workoutId
+                     JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+                     JOIN movement ON exercice.movementId = movement.id
+                     GROUP BY workoutId, modaliteId) as table2
+                     group by table2.workoutId
+                     having modalCount = 2
+             ) as table3;`)
+            
+            wod2modal[0].forEach(function(row) {         
+             excludedWodId.push(row.workoutId)     
+         })
+         
+         }
+}
+
+
+async function getWod() {
+    result = await promiseDb.query(`select workout.id as id, timeInSec, typeName as workoutType, rounds as numberOfRounds from workout
+    JOIN workouttype on workoutTypeId = workouttype.id
+    where workout.id not in (${excludedWodId}) AND workoutTypeId != 3 LIMIT 1;`)
+    res.status(200).json(result[0])
+}
+
+    async function wait() {
+         await  getModalCount()
+         await getTimecount()
+         console.log(`Count with 1 modal ${count1modal}`)
+            console.log(`Count with 2 modal ${count2modal}`)
+            console.log(`Count with 3 modal ${count3modal}`)
+            console.log(`Count with 7 min under ${countminunder7}`)
+            console.log(`Count with 15 min under ${countminunder15}`)
+            console.log(`Count with 15 min over ${countminover15}`)
+        await exludedWodLogic(count1modal = count1modal, count2modal = count2modal, count3modal = count3modal, countminunder7=countminunder7, countminunder15=countminunder15, countminover15 = countminover15)
+       getWod()
+    }
+           
+            
+   
+    
+wait()
+// ASYNC CODE ABOVE
+
+
+
+
+
+
+
+    
+
                     
                 });
                    
