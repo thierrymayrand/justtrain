@@ -1,5 +1,5 @@
-const { query } = require('express');
 const express = require('express');
+const { query } = require('express');
 const router = express.Router();
 
 const mysql = require('mysql2')
@@ -32,6 +32,20 @@ router.get('/allusers', (req, res, next) => {
      res.status(200).json(result)
       });
     });
+
+
+router.get('/userworkouts', (req, res) => {
+    const userId = req.query.id
+   async function userWorkouts() {
+    const result = await promiseDb.query(`SELECT id, workoutId, result, resultPercent, expectedResult, dateAndTime FROM usercompletedwod
+    WHERE userId = "${userId}";`)
+    console.log(result[0])
+    res.status(200).json(result[0])
+   } 
+   userWorkouts()
+   
+})
+
 
 router.get('/exercices', (req, res, next) => { 
     db.query("SELECT * FROM Exercice",
@@ -108,7 +122,7 @@ router.post('/wodcompleted', (req, res, next) => {
 
 router.get('/workout', (req, res) => {
     const userId = req.query.id
-    const excludedWodId = Array();
+    const excludedWodId = Array(1);
     var countminunder15 = 0
     var countminunder7 = 0
     var countminover15 = 0
@@ -154,19 +168,20 @@ router.get('/workout', (req, res) => {
         
 
         const listCount1Modal = await promiseDb.query(`select count(*) as wodwith1modal from (
-            select workoutId, count(*) as modalCount from (
-            select table1.workoutId, modaliteId from (
-                    select workoutId from
+            select count(*) as wodModalCount, id from (
+            select table1.id, modaliteId from (
+                    select * from
                     usercompletedwod
-                    WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
+                    WHERE  userId="${userId}"
                     limit 6) as table1
                     join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
                     JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
                     JOIN movement ON exercice.movementId = movement.id
-                    GROUP BY table1.workoutId, modaliteId) as table2
-                    group by table2.workoutId
-                    having modalCount = 1
-            ) as table3;`);
+                    GROUP BY id, modaliteId
+                    ) as table2
+                    group by id
+                    having wodModalCount = 1
+            ) as table3;  `);
         
         count1modal = listCount1Modal[0][0].wodwith1modal
        
@@ -230,7 +245,7 @@ router.get('/workout', (req, res) => {
            wod1modal[0].forEach(function(row) {         
             excludedWodId.push(row.workoutId)     
         })
-       
+        console.log(excludedWodId)
          console.log("above is the excluded wod")
         }
         if (count2modal >= 2) {
@@ -257,8 +272,8 @@ router.get('/workout', (req, res) => {
 async function getWod() {
     result = await promiseDb.query(`select workout.id as id, timeInSec, typeName as workoutType, rounds as numberOfRounds from workout
     JOIN workouttype on workoutTypeId = workouttype.id
-    where workout.id not in (${excludedWodId}) AND workoutTypeId != 3 LIMIT 1;`)
-    res.status(200).json(result[0])
+    where  workoutTypeId != 3 AND workoutTypeId != 2 ORDER BY RAND() LIMIT 1;`)
+    res.status(200).json(result[0][0])
 }
 
 
@@ -274,23 +289,12 @@ async function getWod() {
         await exludedWodLogic(count1modal = count1modal, count2modal = count2modal, count3modal = count3modal, countminunder7=countminunder7, countminunder15=countminunder15, countminover15 = countminover15)
        getWod()
     }
-           
-            
-   
-    
+ 
 wait()
-// ASYNC CODE ABOVE
-
-
-
-
-
-
-
-    
-
-                    
+// ASYNC CODE ABOVE       
                 });
+
+
                    
 
 router.get('/getexercices', (req, res) => {
