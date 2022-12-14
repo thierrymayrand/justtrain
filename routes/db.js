@@ -189,7 +189,7 @@ router.get('/workout', (req, res) => {
 
     }
 
-    async function getTimecount()  {
+    async function getTimecount() {
         const countminunder15list = await promiseDb.query(`select count(*) as countwodunder15  from (
             select * from usercompletedwod
         where userId = '${userId}'
