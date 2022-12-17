@@ -529,7 +529,9 @@ router.get('/equipfromgym', (req, res) => {
 
 router.get('/workoutinfo', (req, res) => {
     const wodId = req.query.id
-    db.query(`SELECT id, timeInSec, workoutTypeId as workoutType, rounds as numberOfRounds FROM workout WHERE id = ${wodId};`, (err, result, fields) => {
+    db.query(`SELECT workout.id as id, timeInSec, typeName as workoutType, rounds as numberOfRounds FROM workout
+    JOIN workouttype on workoutTypeId = workouttype.id
+    WHERE workout.id = ${wodId};`, (err, result, fields) => {
         if (err) console.log(err.message)
         else {
             res.status(200).json(result[0])
