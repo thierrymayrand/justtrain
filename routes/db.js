@@ -527,4 +527,14 @@ router.get('/equipfromgym', (req, res) => {
    })
 });
 
+router.get('workoutinfo', (req, res) => {
+    const wodId = req.query.id
+    db.query(`SELECT * FROM workout WHERE id = ${wodId};`, (err, result, fields) => {
+        if (err) console.log(err.message)
+        else {
+            res.status(200).json(result)
+        }
+    })
+})
+
 module.exports = router;
