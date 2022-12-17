@@ -532,7 +532,7 @@ router.get('/workoutinfo', (req, res) => {
     db.query(`SELECT id, timeInSec, workoutTypeId as workoutType, rounds as numberOfRounds FROM workout WHERE id = ${wodId};`, (err, result, fields) => {
         if (err) console.log(err.message)
         else {
-            res.status(200).json(result)
+            res.status(200).json(result[0])
         }
     })
 })
