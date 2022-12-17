@@ -499,6 +499,24 @@ router.post('/creategym', (req, res, next) => {
     
 });
 
+
+
+// Add user to sept deniers gym-> POST
+router.post('/addseptdeniers', (req, res, next) => {
+    const userId = `${req.body.user.toString()}`
+            db.query(`INSERT INTO usertogym (userId, gymId) VALUES ("${userId}", 1);`, (err, result, fields) => {
+                if (err) console.log(err.message)
+                else {
+                    res.status(300);
+                }
+            })
+        
+
+    
+    
+    
+});
+
 // GET THE CURRENT USER
 router.get('/allgym', (req, res) => {
     const userId = req.query.id
