@@ -527,7 +527,7 @@ router.get('/equipfromgym', (req, res) => {
    })
 });
 
-router.get('workoutinfo', (req, res) => {
+router.get('/workoutinfo', (req, res) => {
     const wodId = req.query.id
     db.query(`SELECT id, timeInSec, workoutTypeId as workoutType, rounds as numberOfRounds FROM workout WHERE id = ${wodId};`, (err, result, fields) => {
         if (err) console.log(err.message)
