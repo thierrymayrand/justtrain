@@ -122,6 +122,7 @@ router.post('/wodcompleted', (req, res, next) => {
 
 router.get('/workout', (req, res) => {
     const userId = req.query.id
+    const gymId = req.query.gymId
     const excludedWodId = Array(1);
     var countminunder15 = 0
     var countminunder7 = 0
@@ -129,6 +130,22 @@ router.get('/workout', (req, res) => {
     var count2modal = 0
     var count3modal = 0
     var count1modal = 0
+
+    async function exludeMissingEquipment() {
+        const exludedWod = await promiseDb.query(`SELECT workoutId FROM exercicetoworkout WHERE exerciceId IN (
+            SELECT id as exerciceId FROM exercice WHERE movementId IN (
+                SELECT movementId FROM equipmenttomovement WHERE equipmentId NOT IN (
+                    SELECT equipmentId FROM equipmenttogym WHERE gymId = 12
+                )
+            )
+        )
+        GROUP BY workoutId;`)
+
+        exludedWod[0].forEach(function(row) {         
+            excludedWodId.push(row.workoutId)     
+        })
+        console.log(excludedWodId)
+    }
 
     async function getModalCount() {
         const listCount2Modal = await promiseDb.query(`select count(*) as wodwith2modal from (
@@ -279,8 +296,9 @@ async function getWod() {
 
     async function wait() {
          await  getModalCount()
+         await exludeMissingEquipment()
          await getTimecount()
-         console.log(`Count with 1 modal ${count1modal}`)
+            console.log(`Count with 1 modal ${count1modal}`)
             console.log(`Count with 2 modal ${count2modal}`)
             console.log(`Count with 3 modal ${count3modal}`)
             console.log(`Count with 7 min under ${countminunder7}`)
@@ -510,11 +528,6 @@ router.post('/addseptdeniers', (req, res, next) => {
                     res.status(300);
                 }
             })
-        
-
-    
-    
-    
 });
 
 // GET THE CURRENT USER
