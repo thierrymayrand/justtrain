@@ -135,7 +135,7 @@ router.get('/workout', (req, res) => {
         const exludedWod = await promiseDb.query(`SELECT workoutId FROM exercicetoworkout WHERE exerciceId IN (
             SELECT id as exerciceId FROM exercice WHERE movementId IN (
                 SELECT movementId FROM equipmenttomovement WHERE equipmentId NOT IN (
-                    SELECT equipmentId FROM equipmenttogym WHERE gymId = 12
+                    SELECT equipmentId FROM equipmenttogym WHERE gymId = ${gymId}
                 )
             )
         )
