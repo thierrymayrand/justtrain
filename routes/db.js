@@ -71,14 +71,15 @@ router.post('/users', (req, res) => {
 // GET THE CURRENT USER
 router.get('/user', (req, res) => {
     const userId = req.query.id.toString()
+
+    async function getUserInfo() {
+        const result = await promiseDb.query(`SELECT * FROM appuser WHERE id = "${userId}";`)
+        console.log(result[0])
+        res.status(200).json(result[0][0])
+       } 
+       getUserInfo()
  
-  db.query(`SELECT * FROM appuser WHERE id = "${userId}";`, (err, result, fields) => {
-    if (err) console.log(err.message)
-    else {
-    console.log(result)
-    res.status(200).json(result[0])
-  }
-   })
+  
 });
  
 
