@@ -83,6 +83,19 @@ router.get('/user', (req, res) => {
 });
  
 
+// GET ALL MOVEMENT
+router.get('/movements', (req, res) => {
+    
+    async function getAllMovement() {
+        const result = await promiseDb.query(`SELECT * FROM movement";`)
+        console.log(result[0])
+        res.status(200).json(result[0][0])
+       } 
+       getAllMovement()
+ 
+  
+});
+
 // GET THE MODALITY AVERAGE
 router.get('/averagemodalite', (req, res) => {
     const userId = req.query.id
