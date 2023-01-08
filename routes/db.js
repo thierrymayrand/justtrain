@@ -96,6 +96,18 @@ router.get('/movements', (req, res) => {
   
 });
 
+// GET ALL WORKOUT TYPES
+router.get('/workouttype', (req, res) => {
+    
+    async function getAllWorkoutType() {
+        const result = await promiseDb.query(`SELECT * FROM workouttype;`)
+        res.status(200).json(result[0])
+       } 
+       getAllWorkoutType()
+ 
+  
+});
+
 // GET THE MODALITY AVERAGE
 router.get('/averagemodalite', (req, res) => {
     const userId = req.query.id
