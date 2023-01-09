@@ -91,7 +91,7 @@ router.get('/equipfrommovement', (req, res) => {
         console.log(result[0])
         res.status(200).json(result[0])
        } 
-       getUserInfo()
+       getMovementEquip()
  
   
 });
