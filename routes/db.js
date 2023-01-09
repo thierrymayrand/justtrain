@@ -89,7 +89,7 @@ router.get('/equipfrommovement', (req, res) => {
     async function getMovementEquip() {
         const result = await promiseDb.query(`SELECT id, equipmentId FROM equipmenttomovement WHERE movementId = ${movementId};`)
         console.log(result[0])
-        res.status(200).json(result[0][0])
+        res.status(200).json(result[0])
        } 
        getUserInfo()
  
