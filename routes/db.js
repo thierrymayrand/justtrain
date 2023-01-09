@@ -81,6 +81,20 @@ router.get('/user', (req, res) => {
  
   
 });
+
+// GET EQUIPMENT FROM MOVEMENT
+router.get('/equipfrommovement', (req, res) => {
+    const movementId = req.query.id.toString()
+
+    async function getMovementEquip() {
+        const result = await promiseDb.query(`SELECT id, equipmentId FROM equipmenttomovement WHERE movementId = ${movementId};`)
+        console.log(result[0])
+        res.status(200).json(result[0][0])
+       } 
+       getUserInfo()
+ 
+  
+});
  
 
 // GET ALL MOVEMENT
