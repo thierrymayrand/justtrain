@@ -573,7 +573,7 @@ router.post('/createwod', (req, res, next) => {
     async function createWod() {
         wod = await promiseDb.query(`INSERT INTO workout (rounds, workoutTypeId) VALUES (5, 1);`)
         res.status(200);
-        wodId = wod.insertId
+        wodId = 20
         console.log(wodId)
     }
     createWod()
