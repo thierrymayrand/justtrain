@@ -568,12 +568,12 @@ router.post('/createwod', (req, res, next) => {
     // CREATE WORKOUT 
 
     // TAG WORKOUT TO USER
-
+    for (var key in exercices) {
+        console.log(key)
+    }
     // CREATE EXERCICES
     async function createExercice() {
-        for (var key in exercices) {
-            console.log(key)
-        }
+        
         
         // console.log(values)
         //result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES (${values});`)
