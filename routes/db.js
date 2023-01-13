@@ -574,7 +574,8 @@ router.post('/createwod', (req, res, next) => {
         const item =`(${elem.rep}, ${elem.weight}, ${elem.movementId})`
         values.push(item)
     })
-    console.log(values)
+    string = values.join(",")
+    console.log(string)
     // CREATE EXERCICES
     async function createExercice() {
         
