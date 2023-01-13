@@ -567,7 +567,7 @@ router.post('/createwod', (req, res, next) => {
     console.log(exercicesToJSON)
     const values = Array()
     res.status(200)
-    var wodId = 0
+    let wodId;
     // CREATE WORKOUT 
 
     async function createWod() {
