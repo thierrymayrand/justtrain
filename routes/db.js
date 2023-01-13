@@ -565,14 +565,16 @@ router.post('/createwod', (req, res, next) => {
     const exercices = req.body.exercices
     const exercicesToJSON = JSON.parse(exercices)
     console.log(exercicesToJSON)
+    const values = Array()
     res.status(200)
     // CREATE WORKOUT 
 
     // TAG WORKOUT TO USER
     exercicesToJSON.forEach(elem => {
-        console.log(elem.rep)
-        console.log(`(${elem.rep}, ${elem.weight}, ${elem.movementId})`)
+        const item =`(${elem.rep}, ${elem.weight}, ${elem.movementId})`
+        values.push(item)
     })
+    console.log(values)
     // CREATE EXERCICES
     async function createExercice() {
         
