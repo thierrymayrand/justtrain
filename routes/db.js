@@ -576,13 +576,14 @@ router.post('/createwod', (req, res, next) => {
     })
     string = values.join(",")
     console.log(string)
+   
     // CREATE EXERCICES
     async function createExercice() {
         
         
         
-        //result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES (${values});`)
-        
+        result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES (${string});`)
+        res.status(200);
     }
 
      createExercice()
