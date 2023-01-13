@@ -477,6 +477,16 @@ router.get('/modalite', (req, res) => {
     });
 });
 
+router.get('/movement', (req, res) => {
+    const movementId = req.query.id.toString()
+    db.query(`SELECT * FROM movement WHERE id = ${movementId};`,
+    function(err, result) {if (err) throw err;
+        res.status(200).json(result)
+        console.log(result)
+        
+    });
+});
+
 router.get('/wodfunctions', (req, res) => {
     wodId = req.query.id.toString()
     db.query(`SELECT Functions.functionName as id, SUM(rep) as totalRep FROM ExerciceToWorkout
