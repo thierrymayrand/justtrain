@@ -563,14 +563,12 @@ router.post('/createwod', (req, res, next) => {
    // const userId = `${req.body.user.toString()}`
     // const workoutType = req.body.wodType
     const exercices = req.body.exercices
-    console.log(exercices)
+    console.log(exercices[0])
     res.status(200)
     // CREATE WORKOUT 
 
     // TAG WORKOUT TO USER
-    exercices.forEach(function(elem){
-        console.log(elem)
-    })
+    
     // CREATE EXERCICES
     async function createExercice() {
         
