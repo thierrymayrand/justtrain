@@ -558,6 +558,29 @@ router.post('/creategym', (req, res, next) => {
 });
 
 
+// CREATE NEW WORKOUT
+router.post('/createwod', (req, res, next) => {
+    const userId = `${req.body.user.toString()}`
+    // const workoutType = req.body.wodType
+    const exercices = req.body.exercices
+
+    // CREATE WORKOUT 
+
+    // TAG WORKOUT TO USER
+
+    // CREATE EXERCICES
+    async function createExercice() {
+        const values = exercices.map (x => `(${x})`).join (', ');
+        result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES (${values});`)
+        res.status(200)
+    }
+
+    createExercice()
+
+    // TAG EVERY EXERCICE TO WORKOUT 
+});
+
+
 
 // Add user to sept deniers gym-> POST
 router.post('/addseptdeniers', (req, res, next) => {
