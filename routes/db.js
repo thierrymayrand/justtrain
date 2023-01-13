@@ -567,18 +567,18 @@ router.post('/createwod', (req, res, next) => {
     console.log(exercicesToJSON)
     const values = Array()
     res.status(200)
-    var wodId = 0
+    const wodId = 0
     // CREATE WORKOUT 
 
     async function createWod() {
         wod = await promiseDb.query(`INSERT INTO workout (rounds, workoutTypeId) VALUES (5, 1);`)
         res.status(200);
-        wodId = wod.insertId
+       const wodId = wod.insertId
         console.log(wodId)
     }
     createWod()
     // TAG WORKOUT TO USER
-
+    console.log(wodId)
      // CREATE EXERCICES
     exercicesToJSON.forEach(elem => {
         const item =`(${elem.rep}, ${elem.weight}, ${elem.movementId}, ${wodId})`
