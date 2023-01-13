@@ -570,13 +570,13 @@ router.post('/createwod', (req, res, next) => {
 
     // TAG WORKOUT TO USER
     exercicesToJSON.forEach(elem => {
-        console.log(elem)
+        console.log(elem.rep)
     })
     // CREATE EXERCICES
     async function createExercice() {
         
         
-        // console.log(values)
+        
         //result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES (${values});`)
         
     }
