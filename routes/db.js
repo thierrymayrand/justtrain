@@ -564,6 +564,7 @@ router.post('/createwod', (req, res, next) => {
     // const workoutType = req.body.wodType
     const exercices = req.body.exercices
     console.log(exercices)
+    res.status(200)
     // CREATE WORKOUT 
 
     // TAG WORKOUT TO USER
@@ -572,10 +573,10 @@ router.post('/createwod', (req, res, next) => {
     async function createExercice() {
         const values = exercices.map (x => `(${x})`).join (', ');
         //result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES (${values});`)
-        res.status(200)
+        
     }
 
-    createExercice()
+    // createExercice()
 
     // TAG EVERY EXERCICE TO WORKOUT 
 });
