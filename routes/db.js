@@ -563,7 +563,7 @@ router.post('/createwod', (req, res, next) => {
     const userId = `${req.body.user.toString()}`
     // const workoutType = req.body.wodType
     const exercices = req.body.exercices
-
+    console.log(exercices)
     // CREATE WORKOUT 
 
     // TAG WORKOUT TO USER
@@ -571,7 +571,7 @@ router.post('/createwod', (req, res, next) => {
     // CREATE EXERCICES
     async function createExercice() {
         const values = exercices.map (x => `(${x})`).join (', ');
-        result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES (${values});`)
+        //result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES (${values});`)
         res.status(200)
     }
 
