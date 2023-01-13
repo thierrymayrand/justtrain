@@ -571,8 +571,8 @@ router.post('/createwod', (req, res, next) => {
 
     // CREATE EXERCICES
     async function createExercice() {
-        for (let i=0; i < exercices.lenght; i++) {
-            console.log("item in")
+        for (var key in exercices) {
+            console.log(key)
         }
         
         // console.log(values)
