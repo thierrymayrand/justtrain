@@ -571,7 +571,7 @@ router.post('/createwod', (req, res, next) => {
 
     // CREATE EXERCICES
     async function createExercice() {
-        const values = exercices.map (x => `(${x.rep})`).join (', ');
+        const values = exercices.map (x => `(${x})`).join (', ');
         console.log(values)
         //result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES (${values});`)
         
