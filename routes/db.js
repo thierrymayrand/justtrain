@@ -567,7 +567,7 @@ router.post('/createwod', (req, res, next) => {
     console.log(exercicesToJSON)
     const values = Array()
     res.status(200)
-    const wodId = 0
+    var wodId = 0
     // CREATE WORKOUT 
 
     async function createWod() {
@@ -578,22 +578,25 @@ router.post('/createwod', (req, res, next) => {
     }
     createWod()
     // TAG WORKOUT TO USER
+
+     // CREATE EXERCICES
     exercicesToJSON.forEach(elem => {
-        const item =`(${elem.rep}, ${elem.weight}, ${elem.movementId})`
+        const item =`(${elem.rep}, ${elem.weight}, ${elem.movementId}, ${wodId})`
         values.push(item)
     })
     string = values.join(",")
     console.log(string)
    
-    // CREATE EXERCICES
+   
     async function createExercice() {
-        result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES ${string};`)
+        result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId, workoutId) VALUES ${string};`)
         res.status(200);
     }
 
      createExercice()
 
     // TAG EVERY EXERCICE TO WORKOUT 
+
 });
 
 
