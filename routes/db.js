@@ -564,7 +564,7 @@ router.post('/createwod', (req, res, next) => {
     // const workoutType = req.body.wodType
     const exercices = req.body.exercices
     const exercicesToJSON = JSON.parse(exercices)
-    console.log(exercicesToJSON)
+    
     const values = Array()
     res.status(200)
  
@@ -599,7 +599,7 @@ router.post('/createwod', (req, res, next) => {
     });
 
     // TAG WORKOUT TO USER
-    console.log(wodId)
+    
      // CREATE EXERCICES
     
    
