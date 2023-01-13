@@ -574,7 +574,7 @@ router.post('/createwod', (req, res, next) => {
         res.status(200);
         console.log(wod)
     }
-
+    createWod()
     // TAG WORKOUT TO USER
     exercicesToJSON.forEach(elem => {
         const item =`(${elem.rep}, ${elem.weight}, ${elem.movementId})`
