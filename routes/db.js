@@ -562,8 +562,8 @@ router.post('/creategym', (req, res, next) => {
 router.post('/createwod', (req, res, next) => {
     const userId = `${req.body.user.toString()}`
     // const workoutType = req.body.wodType
-   // const exercices = req.body.exercices
-    console.log(userId)
+    const exercices = req.body.exercices
+    console.log(exercices)
     res.status(200)
     // CREATE WORKOUT 
 
