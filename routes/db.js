@@ -568,9 +568,9 @@ router.post('/createwod', (req, res, next) => {
     // CREATE WORKOUT 
 
     // TAG WORKOUT TO USER
-    for (var key in exercices) {
-        console.log(key)
-    }
+    exercices.forEach(function(elem){
+        console.log(elem)
+    })
     // CREATE EXERCICES
     async function createExercice() {
         
