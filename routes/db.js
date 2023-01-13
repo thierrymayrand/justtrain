@@ -574,15 +574,34 @@ router.post('/createwod', (req, res, next) => {
         wod = await promiseDb.query(`INSERT INTO workout (rounds, workoutTypeId) VALUES (5, 1);`)
         res.status(200);
         console.log(wod)
-        const wodId = wod.insertId
-        console.log(wodId)
+        //const wodId = wod.insertId
+        //console.log(wodId)
+    }
 
-         // CREATE EXERCICES
-        exercicesToJSON.forEach(elem => {
-        const item =`(${elem.rep}, ${elem.weight}, ${elem.movementId}, ${wodId})`
-        values.push(item)
-    })
-    string = values.join(",")
+    db.query(`INSERT INTO workout (rounds, workoutTypeId) VALUES (5, 1);`, (err, result, fields) => {
+        if (err) console.log(err.message)
+        else {
+            const wodId = result.insertId
+            console.log(wodId)
+            exercicesToJSON.forEach(elem => {
+                const item =`(${elem.rep}, ${elem.weight}, ${elem.movementId}, ${wodId})`
+                values.push(item)
+            })
+            string = values.join(",")
+
+            db.query(`INSERT INTO exercice (rep, weight, movementId, workoutId) VALUES ${string};`, (err, result, fields) => {
+                if (err) console.log(err.message)
+                else {
+                    res.status(300);
+                }
+            })
+        }
+    });
+
+    // TAG WORKOUT TO USER
+    console.log(wodId)
+     // CREATE EXERCICES
+    
    
    
    
@@ -591,13 +610,7 @@ router.post('/createwod', (req, res, next) => {
         res.status(200);
     }
 
-     createExercice()
-    }
-    
-    createWod()
-    // TAG WORKOUT TO USER
-    console.log(wodId)
-    
+     
 
     // TAG EVERY EXERCICE TO WORKOUT 
 
