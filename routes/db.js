@@ -582,7 +582,7 @@ router.post('/createwod', (req, res, next) => {
         
         
         
-        result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES (${string});`)
+        result = await promiseDb.query(`INSERT INTO exercice (rep, weight, movementId) VALUES ${string};`)
         res.status(200);
     }
 
