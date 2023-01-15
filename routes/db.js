@@ -574,7 +574,7 @@ router.post('/createwod', (req, res, next) => {
     // const workoutType = req.body.wodType
     const exercices = req.body.exercices
     const exercicesToJSON = JSON.parse(exercices)
-    const wodType = req.body.exercices
+    const wodType = req.body.wodType
     const rounds = req.body.rounds
     const min = req.body.min
     
