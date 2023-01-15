@@ -361,7 +361,7 @@ router.get('/getexercices', (req, res) => {
     JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
     JOIN Movement ON movementId = Movement.id
     JOIN Modalite ON modaliteId = Modalite.id
-    WHERE workoutId = ${id}`,
+    WHERE exercicetoworkout.workoutId = ${id}`,
     function(err, result) { if (err) throw err; 
            
             console.log(result)
