@@ -504,7 +504,7 @@ router.get('/wodfunctions', (req, res) => {
     });
 });
 
-router.get('/modalrepetition', (req, res) =>  {
+router.get('/modalrepetition', (req, res) => {
     wodId = req.query.id.toString()
     db.query(` SELECT nomModal as id, SUM(rep) as totalRep FROM ExerciceToWorkout
     JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
