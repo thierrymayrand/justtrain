@@ -394,7 +394,7 @@ router.get('/skill', (req, res) => {
     });
 });
 
-router.get('/finisher', (req, res) => {
+router.get('/finisher', (req, res) =>  {
     const wodId = req.query.id.toString()
     db.query(` SELECT ExerciceToWorkout.id, equipmentName, CONCAT(rep, ' ', title) AS mainTitle FROM ExerciceToWorkout JOIN Exercice ON exerciceId = Exercice.id JOIN Movement ON movementId = Movement.id JOIN Equipment ON equipmentId = Equipment.id WHERE workoutId = ${wodId};`,
     function(err, result) {if (err) throw err;
