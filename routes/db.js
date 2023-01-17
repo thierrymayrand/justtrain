@@ -360,7 +360,7 @@ router.get('/getexercices', (req, res) => {
     db.query(`SELECT  exercice.id as id, rep, title, nomModal  FROM exercice
     JOIN Movement ON movementId = Movement.id
     JOIN Modalite ON modaliteId = Modalite.id
-    WHERE workoutId = ${id};`,
+    WHERE workoutId = ${id} ORDER BY indexId;`,
     function(err, result) { if (err) throw err; 
            
             console.log(result)
