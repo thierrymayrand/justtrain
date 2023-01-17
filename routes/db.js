@@ -601,7 +601,7 @@ router.post('/createwod', (req, res, next) => {
             })
             string = values.join(",")
 
-            db.query(`INSERT INTO exercice ( id,rep, weight, movementId, workoutId) VALUES ${string};`, (err, result, fields) => {
+            db.query(`INSERT INTO exercice ( indexId,rep, weight, movementId, workoutId) VALUES ${string};`, (err, result, fields) => {
                 if (err) console.log(err.message)
                 else {
                     res.status(300);
