@@ -596,12 +596,12 @@ router.post('/createwod', (req, res, next) => {
             const wodId = result.insertId
             console.log(wodId)
             exercicesToJSON.forEach(elem => {
-                const item =`(${elem.rep}, ${elem.weight}, ${elem.movementId}, ${wodId})`
+                const item =`( ${elem.id},${elem.rep}, ${elem.weight}, ${elem.movementId}, ${wodId})`
                 values.push(item)
             })
             string = values.join(",")
 
-            db.query(`INSERT INTO exercice (rep, weight, movementId, workoutId) VALUES ${string};`, (err, result, fields) => {
+            db.query(`INSERT INTO exercice ( id,rep, weight, movementId, workoutId) VALUES ${string};`, (err, result, fields) => {
                 if (err) console.log(err.message)
                 else {
                     res.status(300);
