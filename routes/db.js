@@ -396,7 +396,7 @@ wait()
 
 router.get('/getexercices', (req, res) => {
     const id = req.query.id
-    db.query(`SELECT  exercice.id as id, rep, title, nomModal  FROM exercice
+    db.query(`SELECT  exercice.id as id, rep, title, nomModal, weight  FROM exercice
     JOIN Movement ON movementId = Movement.id
     JOIN Modalite ON modaliteId = Modalite.id
     WHERE workoutId = ${id} ORDER BY indexId;`,
