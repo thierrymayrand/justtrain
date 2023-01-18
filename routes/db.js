@@ -60,6 +60,19 @@ router.get('/myworkouts', (req, res) => {
    
 })
 
+router.get('/completedwodcount', (req, res) => {
+    const userId = req.query.id
+   async function userWorkoutsCount() {
+    const result = await promiseDb.query(`select  count(*) as wodCount from workout 
+    JOIN workouttype ON workoutTypeId = workouttype.id
+    where userId = "${userId}";`)
+    console.log(result[0])
+    res.status(200).json(result[0][0])
+   } 
+   userWorkoutsCount()
+   
+})
+
 
 router.get('/exercices', (req, res, next) => { 
     db.query("SELECT * FROM Exercice",
