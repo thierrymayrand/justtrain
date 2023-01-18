@@ -64,7 +64,8 @@ router.get('/allwod', (req, res) => {
     const userId = req.query.id
    async function userWorkouts() {
     const result = await promiseDb.query(`select workout.id as id, timeInSec, rounds, typeName from workout 
-    JOIN workouttype ON workoutTypeId = workouttype.id;`)
+    JOIN workouttype ON workoutTypeId = workouttype.id
+    WHERE workoutTypeId = 1 OR workoutTypeId=2;`)
     console.log(result[0])
     res.status(200).json(result[0])
    } 
