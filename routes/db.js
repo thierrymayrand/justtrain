@@ -47,6 +47,20 @@ router.get('/userworkouts', (req, res) => {
 })
 
 
+router.get('/myworkouts', (req, res) => {
+    const userId = req.query.id
+   async function userWorkouts() {
+    const result = await promiseDb.query(`select workout.id as id, timeInSec, rounds, typeName from workout 
+    JOIN workouttype ON workoutTypeId = workouttype.id
+    where userId = "${userId}";`)
+    console.log(result[0])
+    res.status(200).json(result[0])
+   } 
+   userWorkouts()
+   
+})
+
+
 router.get('/exercices', (req, res, next) => { 
     db.query("SELECT * FROM Exercice",
  function(err, result) {if (err) throw err;
