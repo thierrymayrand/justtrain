@@ -576,6 +576,7 @@ router.post('/createwod', (req, res, next) => {
     const wodType = req.body.wodType
     const rounds = req.body.rounds
     const min = req.body.min
+    const userId = req.body.userId
     
     const values = Array()
     res.status(200)
@@ -583,7 +584,7 @@ router.post('/createwod', (req, res, next) => {
     // CREATE WORKOUT 
 
     async function createWod() {
-        wod = await promiseDb.query(`INSERT INTO workout (rounds, workoutTypeId, timeInSec) VALUES (${rounds}, ${wodType}, ${min} );`)
+        wod = await promiseDb.query(`INSERT INTO workout (userId,rounds, workoutTypeId, timeInSec) VALUES (${userId} ,${rounds}, ${wodType}, ${min} );`)
         res.status(200);
         console.log(wod)
         //const wodId = wod.insertId
