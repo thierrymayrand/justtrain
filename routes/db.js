@@ -591,7 +591,7 @@ router.post('/createwod', (req, res, next) => {
         //console.log(wodId)
     }
 
-    db.query(`INSERT INTO workout (rounds, workoutTypeId, timeInSec) VALUES (${rounds}, ${wodType}, ${min} );`, (err, result, fields) => {
+    db.query(`INSERT INTO workout (userId,rounds, workoutTypeId, timeInSec) VALUES (${userId}, ${rounds}, ${wodType}, ${min} );`, (err, result, fields) => {
         if (err) console.log(err.message)
         else {
             const wodId = result.insertId
