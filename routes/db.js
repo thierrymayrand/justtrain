@@ -685,7 +685,7 @@ router.post('/addseptdeniers', (req, res, next) => {
 router.post('/likewod', (req, res, next) => {
     const userId = req.body.userId
     const wodId = req.body.wodId
-            db.query(`INSERT INTO likeworkout (userId, workoutId) VALUES ("${userId}", ${wodId});`, (err, result, fields) => {
+            db.query(`INSERT INTO likedworkout (userId, workoutId) VALUES ("${userId}", ${wodId});`, (err, result, fields) => {
                 if (err) console.log(err.message)
                 else {
                     res.status(300);
