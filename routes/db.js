@@ -697,7 +697,7 @@ router.get('/likedwod', (req, res) => {
     const userId = req.query.id.toString()
 
     async function getLikedWod() {
-        const result = await promiseDb.query(`SELECT workoutId FROM likedworkout WHERE userId = "${userId}";`)
+        const result = await promiseDb.query(`SELECT workoutId as id FROM likedworkout WHERE userId = "${userId}";`)
         console.log(result[0])
         res.status(200).json(result[0])
        } 
