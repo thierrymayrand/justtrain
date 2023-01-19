@@ -681,6 +681,19 @@ router.post('/addseptdeniers', (req, res, next) => {
             })
 });
 
+// LIKE WORKOUT POST
+router.post('/likegym', (req, res, next) => {
+    const userId = req.body.userId
+    const wodId = req.body.wodId
+            db.query(`INSERT INTO likeworkout (userId, workoutId) VALUES ("${userId}", ${wodId});`, (err, result, fields) => {
+                if (err) console.log(err.message)
+                else {
+                    res.status(300);
+                }
+            })
+});
+
+
 // GET THE CURRENT USER
 router.get('/allgym', (req, res) => {
     const userId = req.query.id
