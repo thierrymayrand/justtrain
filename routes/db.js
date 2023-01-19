@@ -682,7 +682,7 @@ router.post('/addseptdeniers', (req, res, next) => {
 });
 
 // LIKE WORKOUT POST
-router.post('/likegym', (req, res, next) => {
+router.post('/likewod', (req, res, next) => {
     const userId = req.body.userId
     const wodId = req.body.wodId
             db.query(`INSERT INTO likeworkout (userId, workoutId) VALUES ("${userId}", ${wodId});`, (err, result, fields) => {
