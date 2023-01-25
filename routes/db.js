@@ -234,8 +234,7 @@ router.get('/workout', (req, res) => {
                     usercompletedwod
                     WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
                     limit 6) as table1
-                    join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
-                    JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+                    JOIN exercice ON table1.workoutId = exercice.workoutId
                     JOIN movement ON exercice.movementId = movement.id
                     GROUP BY table1.workoutId, modaliteId) as table2
                     group by table2.workoutId
@@ -243,17 +242,16 @@ router.get('/workout', (req, res) => {
             ) as table3;`);
       
         count2modal = listCount2Modal[0][0].wodwith2modal
-       
+       console.log(`Modal 2 count is : ${count2modal}`)
 
-        const listCount3Modal = await promiseDb.query(`select count(*) as wodwith3modal from (
+        const listCount3Modal = await promiseDb.query(`select count(*) as wodwith2modal from (
             select workoutId, count(*) as modalCount from (
             select table1.workoutId, modaliteId from (
                     select workoutId from
                     usercompletedwod
                     WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
                     limit 6) as table1
-                    join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
-                    JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+                    JOIN exercice ON table1.workoutId = exercice.workoutId
                     JOIN movement ON exercice.movementId = movement.id
                     GROUP BY table1.workoutId, modaliteId) as table2
                     group by table2.workoutId
@@ -263,20 +261,18 @@ router.get('/workout', (req, res) => {
         count3modal = listCount3Modal[0][0].wodwith3modal
         
 
-        const listCount1Modal = await promiseDb.query(`select count(*) as wodwith1modal from (
-            select count(*) as wodModalCount, id from (
-            select table1.id, modaliteId from (
-                    select * from
+        const listCount1Modal = await promiseDb.query(`select count(*) as wodwith2modal from (
+            select workoutId, count(*) as modalCount from (
+            select table1.workoutId, modaliteId from (
+                    select workoutId from
                     usercompletedwod
-                    WHERE  userId="${userId}"
+                    WHERE usercompletedwod.workoutId >= 205 and userId="${userId}"
                     limit 6) as table1
-                    join exercicetoworkout on table1.workoutId = exercicetoworkout.workoutId
-                    JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
+                    JOIN exercice ON table1.workoutId = exercice.workoutId
                     JOIN movement ON exercice.movementId = movement.id
-                    GROUP BY id, modaliteId
-                    ) as table2
-                    group by id
-                    having wodModalCount = 1
+                    GROUP BY table1.workoutId, modaliteId) as table2
+                    group by table2.workoutId
+                    having modalCount = 1
             ) as table3;  `);
         
         count1modal = listCount1Modal[0][0].wodwith1modal
