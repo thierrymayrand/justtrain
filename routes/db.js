@@ -364,7 +364,7 @@ router.get('/workout', (req, res) => {
 async function getWod() {
     result = await promiseDb.query(`select workout.id as id, timeInSec, typeName as workoutType, rounds as numberOfRounds from workout
     JOIN workouttype on workoutTypeId = workouttype.id
-    where  workoutTypeId != 3 AND workout.id NOT IN ${excludedWodId} ORDER BY RAND() LIMIT 1;`)
+    where  workoutTypeId != 3 AND workout.id NOT IN (${excludedWodId}) ORDER BY RAND() LIMIT 1;`)
     res.status(200).json(result[0][0])
 }
 
