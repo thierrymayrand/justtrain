@@ -354,6 +354,8 @@ router.get('/workout', (req, res) => {
             wod2modal[0].forEach(function(row) {         
              excludedWodId.push(row.workoutId)     
          })
+         console.log(excludedWodId)
+         console.log("above is the excluded wod")
          
          }
 }
