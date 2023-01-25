@@ -423,7 +423,7 @@ router.get('/warmup', (req, res) => {
 router.get('/skill', (req, res) => {
     let skillId = 0
     
-    db.query(`Select workout.id, rounds, timeInSec, typeName as workoutType FROM workout 
+    db.query(`Select workout.id, rounds as numberOfRounds, timeInSec, typeName as workoutType FROM workout 
     JOIN workouttype ON workoutTypeId = workouttype.id
     WHERE workoutTypeId = 5
     ORDER BY RAND()
