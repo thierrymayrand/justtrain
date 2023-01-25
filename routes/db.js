@@ -421,13 +421,22 @@ router.get('/warmup', (req, res) => {
 });
 
 router.get('/skill', (req, res) => {
-    const wodId = req.query.id.toString()
-    db.query(` SELECT ExerciceToWorkout.id, equipmentName, CONCAT(rep, ' ', title) AS mainTitle FROM ExerciceToWorkout JOIN Exercice ON exerciceId = Exercice.id JOIN Movement ON movementId = Movement.id JOIN Equipment ON equipmentId = Equipment.id WHERE workoutId = ${wodId};`,
+    let skillId = 0
+    
+    db.query(`Select workout.id, rounds, timeInSec, typeName as workoutType FROM workout 
+    JOIN workouttype ON workoutTypeId = workouttype.id
+    WHERE workoutTypeId = 5
+    ORDER BY RAND()
+    LIMIT 1;`,
     function(err, result) {if (err) throw err;
-        res.status(200).json(result)
+        skillId = result[0].id
+        console.log(`skill id is ${skillId}`)
+        
+        res.status(200).json(result[0])
         
     });
 });
+
 
 router.get('/finisher', (req, res) => {
     const wodId = req.query.id.toString()
