@@ -324,16 +324,15 @@ router.get('/workout', (req, res) => {
     async function exludedWodLogic(count1modal, count2modal, count3modal, countminunder7, countminunder15, countminover15list) {
         if (count1modal >= 3) {
            const wod1modal = await promiseDb.query(`select * from (
-            select workoutId, count(*) as modalCount from (
-            select workoutId, modaliteId from (
-                    select * from workout) as table1
-                    join exercicetoworkout on workoutId = exercicetoworkout.workoutId
-                    JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
-                    JOIN movement ON exercice.movementId = movement.id
-                    GROUP BY workoutId, modaliteId) as table2
-                    group by table2.workoutId
-                    having modalCount = 1
-            ) as table3;`)
+             select workoutId, count(*) as modalCount from (
+             select workoutId, modaliteId from (
+                     select * from workout) as table1
+                     JOIN exercice ON workoutId = exercice.workoutId
+                     JOIN movement ON exercice.movementId = movement.id
+                     GROUP BY workoutId, modaliteId) as table2
+                     group by table2.workoutId
+                     having modalCount = 1
+             ) as table3;`)
            wod1modal[0].forEach(function(row) {         
             excludedWodId.push(row.workoutId)     
         })
@@ -342,16 +341,15 @@ router.get('/workout', (req, res) => {
         }
         if (count2modal >= 2) {
             const wod2modal = await promiseDb.query(`select * from (
-             select workoutId, count(*) as modalCount from (
-             select workoutId, modaliteId from (
-                     select * from workout) as table1
-                     join exercicetoworkout on workoutId = exercicetoworkout.workoutId
-                     JOIN exercice ON exercicetoworkout.exerciceId = exercice.id
-                     JOIN movement ON exercice.movementId = movement.id
-                     GROUP BY workoutId, modaliteId) as table2
-                     group by table2.workoutId
-                     having modalCount = 2
-             ) as table3;`)
+                select workoutId, count(*) as modalCount from (
+                select workoutId, modaliteId from (
+                        select * from workout) as table1
+                        JOIN exercice ON workoutId = exercice.workoutId
+                        JOIN movement ON exercice.movementId = movement.id
+                        GROUP BY workoutId, modaliteId) as table2
+                        group by table2.workoutId
+                        having modalCount = 2
+                ) as table3;`)
             
             wod2modal[0].forEach(function(row) {         
              excludedWodId.push(row.workoutId)     
