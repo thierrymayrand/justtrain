@@ -458,7 +458,7 @@ router.get('/workoutexpectedscore', (req, res) => {
         console.log(workoutType)
 
 
-        if (workoutType = 1) {
+        if (workoutType == 1) {
             async function getExpectedTime() {
                 const result = await promiseDb.query(`select rounds * (select SUM(totalTimeInSec) as totalTimePerRound FROM (
                     select rep, timeInSec, rep * timeInSec as totalTimeInSec from exercice 
@@ -471,7 +471,7 @@ router.get('/workoutexpectedscore', (req, res) => {
             getExpectedTime()
            }
     
-           if (workoutType = 2) {
+           if (workoutType == 2) {
             async function getExpectedRounds() {
                 const result = await promiseDb.query(`SELECT timeInSec / (select SUM(totalTimeInSec) as totalTimePerRound FROM (
                     select rep, timeInSec, rep * timeInSec as totalTimeInSec from exercice 
