@@ -448,7 +448,7 @@ router.get('/finisher', (req, res) => {
 });
 
 router.get('/workoutexpectedscore', (req, res) => {
-    const workoutId = re.query.id
+    const workoutId = req.query.id
     let workoutType = 0
     const rounds = 0
     const timeInSec = 0
