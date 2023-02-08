@@ -447,6 +447,22 @@ router.get('/finisher', (req, res) => {
     });
 });
 
+router.get('/workoutexpectedscore', (req, res) => {
+    const workoutType = 0
+    const rounds = 0
+    const timeInSec = 0
+    
+    async function getWorkoutType() {
+        const result = await promiseDb.query(`SELECT * FROM workout WHERE id = 648;`)
+        workoutType = result[0][0].workoutTypeId
+        console.log(workoutType)
+        res.status(200).json(result[0])
+       } 
+       getWorkoutType()
+ 
+  
+});
+
 router.get('/warmupfrommodal', (req, res) => {
     modalId = req.query.id.toString()
     db.query(` SELECT * FROM WarmUp WHERE modaliteId=${modalId} LIMIT 1;`,
