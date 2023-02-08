@@ -371,7 +371,7 @@ async function getWod() {
 
     async function wait() {
          await  getModalCount()
-         await exludeMissingEquipment()
+         // await exludeMissingEquipment()
          await getTimecount()
             console.log(`Count with 1 modal ${count1modal}`)
             console.log(`Count with 2 modal ${count2modal}`)
