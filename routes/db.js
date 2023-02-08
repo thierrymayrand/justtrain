@@ -467,7 +467,7 @@ router.get('/workoutexpectedscore', (req, res) => {
                    where workoutId = ${workoutId}
                    ) as table1) as totalTimeInSec
                    from workout where id = ${workoutId};`) 
-                   res.status(200).json(result[0])
+                   res.status(200).json(result[0][0])
             }
             getExpectedTime()
            }
@@ -480,7 +480,7 @@ router.get('/workoutexpectedscore', (req, res) => {
                    where workoutId = ${workoutId}
                    ) as table1) as totalRounds 
                    from workout where id = ${workoutId};`) 
-                   res.status(200).json(result[0])
+                   res.status(200).json(result[0][0])
             }
             getExpectedRounds()
         }
