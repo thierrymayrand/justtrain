@@ -456,10 +456,35 @@ router.get('/workoutexpectedscore', (req, res) => {
         const result = await promiseDb.query(`SELECT * FROM workout WHERE id = 648;`)
         workoutType = result[0][0].workoutTypeId
         console.log(workoutType)
-        res.status(200).json(result[0])
+        
        } 
        getWorkoutType()
- 
+       
+       if (workoutType = 1) {
+        async function getExpectedTime() {
+            const result = await promiseDb.query(`select rounds * (select SUM(totalTimeInSec) as totalTimePerRound FROM (
+                select rep, timeInSec, rep * timeInSec as totalTimeInSec from exercice 
+               JOIN movement ON movementId = movement.id
+               where workoutId = 645
+               ) as table1) as totalTimeInSec
+               from workout where id = 645;`) 
+               res.status(200).json(result[0])
+        }
+        getExpectedTime()
+       }
+
+       if (workoutType = 2) {
+        async function getExpectedRounds() {
+            const result = await promiseDb.query(`SELECT timeInSec / (select SUM(totalTimeInSec) as totalTimePerRound FROM (
+                select rep, timeInSec, rep * timeInSec as totalTimeInSec from exercice 
+               JOIN movement ON movementId = movement.id
+               where workoutId = 648
+               ) as table1) as totalRounds 
+               from workout where id = 648;`) 
+               res.status(200).json(result[0])
+        }
+        getExpectedRounds()
+    }
   
 });
 
