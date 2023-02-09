@@ -158,7 +158,6 @@ router.get('/workouttype', (req, res) => {
        } 
        getAllWorkoutType()
  
-  
 });
 
 // GET THE MODALITY AVERAGE
