@@ -365,6 +365,12 @@ async function getWod() {
     where  workoutTypeId != 3 AND workoutTypeId != 5 AND workout.id NOT IN (${excludedWodId}) ORDER BY RAND() LIMIT 1;`)
     res.status(200).json(result[0][0])
 }
+async function getWodNoExclusion() {
+    result = await promiseDb.query(`select workout.id as id, timeInSec, typeName as workoutType, rounds as numberOfRounds from workout
+    JOIN workouttype on workoutTypeId = workouttype.id
+    where  workoutTypeId != 3 AND workoutTypeId != 5 ORDER BY RAND() LIMIT 1;`)
+    res.status(200).json(result[0][0])
+}
 
 
     async function wait() {
@@ -378,7 +384,14 @@ async function getWod() {
             console.log(`Count with 15 min under ${countminunder15}`)
             console.log(`Count with 15 min over ${countminover15}`)
         await exludedWodLogic(count1modal = count1modal, count2modal = count2modal, count3modal = count3modal, countminunder7=countminunder7, countminunder15=countminunder15, countminover15 = countminover15)
-       getWod()
+        console.log(`excludedwodId lenght is : ${excludedWodId.length}`)
+        if (excludedWodId.length === 0) {
+            getWod()
+        }
+        else if (excludedWodId.length !== 0) {
+            getWodNoExclusion()
+        }
+       
     }
  
 wait()
