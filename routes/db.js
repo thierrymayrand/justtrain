@@ -168,8 +168,7 @@ router.get('/averagemodalite', (req, res) => {
    
 
   db.query(`SELECT Modalite.id,  Modalite.nomModal, AVG(resultPercent) as averagePercent FROM UserCompletedWod 
-  JOIN ExerciceToWorkout ON UserCompletedWod.workoutId = ExerciceToWorkout.workoutId
-  JOIN Exercice ON ExerciceToWorkout.exerciceId = Exercice.id
+  JOIN Exercice ON Exercice.workoutId = usercompletedwod.workoutId
   JOIN Movement ON Exercice.movementId = Movement.id
   JOIN Modalite ON Movement.modaliteID = Modalite.id
   WHERE userId = "${userId}"
