@@ -385,10 +385,10 @@ async function getWodNoExclusion() {
             console.log(`Count with 15 min over ${countminover15}`)
         await exludedWodLogic(count1modal = count1modal, count2modal = count2modal, count3modal = count3modal, countminunder7=countminunder7, countminunder15=countminunder15, countminover15 = countminover15)
         console.log(`excludedwodId lenght is : ${excludedWodId.length}`)
-        if (excludedWodId.length === 0) {
+        if (excludedWodId.length !== 0) {
             getWod()
         }
-        else if (excludedWodId.length !== 0) {
+        else if (excludedWodId.length === 0) {
             getWodNoExclusion()
         }
        
