@@ -772,7 +772,7 @@ router.get('/resultgroupbyfuncandmodal', (req, res) => {
     const userId = req.query.id.toString()
 
     async function getResults() {
-        const result = await promiseDb.query(`select AVG(resultPercent) as avgResult, functionId, functions.title, modaliteId, modalite.nomModal from usercompletedwod
+        const result = await promiseDb.query(`select AVG(resultPercent) * 100 as avgResult, functionId, functions.title, modaliteId, modalite.nomModal from usercompletedwod
         JOIN Exercice ON Exercice.workoutId = usercompletedwod.workoutId
        JOIN Movement ON Exercice.movementId = Movement.id
        JOIN movementfunctions ON Exercice.movementId = movementfunctions.movementId
