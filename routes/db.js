@@ -767,6 +767,28 @@ router.get('/likedwod', (req, res) => {
   
 });
 
+// GET LIKED WOD FOR USER
+router.get('/resultgroupbyfuncandmodal', (req, res) => {
+    const userId = req.query.id.toString()
+
+    async function getResults() {
+        const result = await promiseDb.query(`select AVG(resultPercent) as avgResult, functionId, functions.title, modaliteId, modalite.nomModal from usercompletedwod
+        JOIN Exercice ON Exercice.workoutId = usercompletedwod.workoutId
+       JOIN Movement ON Exercice.movementId = Movement.id
+       JOIN movementfunctions ON Exercice.movementId = movementfunctions.movementId
+       JOIN functions ON functionId = functions.id
+       JOIN Modalite ON Movement.modaliteID = Modalite.id
+       where userId="${userId}"
+       GROUP BY functionId, modaliteId
+       ORDER BY  avgResult;`)
+        console.log(result[0])
+        res.status(200).json(result[0])
+       } 
+       getResults()
+ 
+  
+});
+
 
 // GET THE CURRENT USER
 router.get('/allgym', (req, res) => {
