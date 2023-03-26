@@ -668,7 +668,7 @@ router.post('/creategym', (req, res, next) => {
 
 // LOG RESULTS FROM CHATGPT
 router.post('/logplanning', (req, res, next) => {
-    const userId = `${req.body.user.toString()}`
+    const userId = req.body.userId
     const planning = req.body.planning
     
     db.query(`INSERT INTO logplanning (userId, planning) VALUES ("${userId}", "${planning}")`, (err, result, fields) => {
