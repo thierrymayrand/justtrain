@@ -860,13 +860,14 @@ router.get('/workoutinfo', (req, res) => {
 
 const { Configuration, OpenAIApi } = require("openai");
 
-const configuration = new Configuration({
-  apiKey: "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",
-});
-const openai = new OpenAIApi(configuration);
+
 
 router.get('/chatcompletion', async (req, res) => {
     const wodId = req.query.id;
+    const configuration = new Configuration({
+        apiKey: "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",
+      });
+      const openai = new OpenAIApi(configuration);
     try {
         const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
