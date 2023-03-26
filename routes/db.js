@@ -861,7 +861,7 @@ router.get('/workoutinfo', (req, res) => {
 const { Configuration, OpenAIApi } = require("openai");
 
 const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: "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",
 });
 const openai = new OpenAIApi(configuration);
 
