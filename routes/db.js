@@ -666,6 +666,22 @@ router.post('/creategym', (req, res, next) => {
     
 });
 
+// LOG RESULTS FROM CHATGPT
+router.post('/logplanning', (req, res, next) => {
+    const userId = `${req.body.user.toString()}`
+    const planning = req.body.planning
+    
+    db.query(`INSERT INTO logplanning (userId, planning) VALUES ("${userId}", "${planning}")`, (err, result, fields) => {
+        if (err) console.log(err.message)
+        else {
+            res.status(200)
+        }
+    });
+    
+    
+    
+});
+
 
 // CREATE NEW WORKOUT
 router.post('/createwod', (req, res, next) => {
