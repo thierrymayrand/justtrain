@@ -670,8 +670,8 @@ router.post('/creategym', (req, res, next) => {
 router.post('/logplanning', (req, res, next) => {
     const userId = req.body.userId
     const planning = req.body.planning
-    
-    db.query(`INSERT INTO logplanning (userId, planning) VALUES ("${userId}", "${planning}")`, (err, result, fields) => {
+    const prompt = req.body.prompt
+    db.query(`INSERT INTO logplanning (userId, planning, prompt) VALUES ("${userId}", "${planning}", "${prompt}")`, (err, result, fields) => {
         if (err) console.log(err.message)
         else {
             res.status(200)
