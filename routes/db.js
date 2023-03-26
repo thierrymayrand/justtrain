@@ -859,6 +859,7 @@ router.get('/workoutinfo', (req, res) => {
 
 
 const { Configuration, OpenAIApi } = require("openai");
+require('dotenv').config();
 
 
 
