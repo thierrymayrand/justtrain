@@ -865,7 +865,7 @@ const { Configuration, OpenAIApi } = require("openai");
 router.get('/chatcompletion', async (req, res) => {
     const wodId = req.query.id;
     const configuration = new Configuration({
-        apiKey: "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",
+        apiKey: "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",
       });
       const openai = new OpenAIApi(configuration);
     try {
