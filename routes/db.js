@@ -865,19 +865,22 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-router.get('/chatcompletion', (req, res) => {
-    const wodId = req.query.id
-    async function getGpt() {
+router.get('/chatcompletion', async (req, res) => {
+    const wodId = req.query.id;
+    try {
         const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
             messages: [{role: "user", content: "Hello world"}],
           });
-          console.log(completion.data.choices[0].message);
-          res.status(200).json(completion)
+        const message = completion.data.choices[0].text;
+        console.log(message);
+        res.status(200).json({ message });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Internal Server Error');
     }
-    getGpt()
-    
-})
+});
+
 
 
 module.exports = router;
