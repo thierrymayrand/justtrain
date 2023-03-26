@@ -873,6 +873,7 @@ router.get('/chatcompletion', (req, res) => {
             messages: [{role: "user", content: "Hello world"}],
           });
           console.log(completion.data.choices[0].message);
+          res.status(200).json(completion)
     }
     getGpt()
     
