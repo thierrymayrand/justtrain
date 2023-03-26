@@ -460,7 +460,7 @@ router.get('/finisher', (req, res) => {
 
 router.get('/getplannings', (req, res) => {
     const userId = req.query.userId
-    db.query(`SELECT * FROM logplanning WHERE userId = ${userId};`,
+    db.query(`SELECT * FROM logplanning WHERE userId = "${userId}";`,
     function(err, result) {if (err) throw err;
         res.status(200).json(result)
         
