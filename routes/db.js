@@ -860,13 +860,13 @@ router.get('/workoutinfo', (req, res) => {
 
 const { Configuration, OpenAIApi } = require("openai");
 require('dotenv').config();
-
+const apiKey = process.env.OPENAI_API_KEY;
 
 
 router.get('/chatcompletion', async (req, res) => {
     const wodId = req.query.id;
     const configuration = new Configuration({
-        apiKey: process.env.OPENAI_API_KEY,
+        apiKey: apiKey,
       });
       const openai = new OpenAIApi(configuration);
     try {
