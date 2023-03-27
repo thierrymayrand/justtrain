@@ -876,8 +876,8 @@ router.get('/chatcompletion', async (req, res) => {
             messages: [{role: "user", content: "Hello world"}],
           });
         const message = completion;
-        console.log(message);
-       // res.status(200).json({ message });
+        console.log(message.choices);
+        res.status(200);
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
