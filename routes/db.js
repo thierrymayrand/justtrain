@@ -875,7 +875,7 @@ router.get('/chatcompletion', async (req, res) => {
             model: "gpt-3.5-turbo",
             messages: [{role: "user", content: "Hello world"}],
           });
-        const message = completion.data.choices[0].text;
+        const message = completion;
         console.log(message);
         res.status(200).json({ message });
     } catch (error) {
