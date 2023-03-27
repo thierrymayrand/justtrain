@@ -877,7 +877,7 @@ router.get('/chatcompletion', async (req, res) => {
           });
         const message = completion;
         console.log(message);
-        res.status(200).json({ message });
+       // res.status(200).json({ message });
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
