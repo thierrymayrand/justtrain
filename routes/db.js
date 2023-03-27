@@ -875,9 +875,8 @@ router.get('/chatcompletion', async (req, res) => {
             model: "gpt-3.5-turbo",
             messages: [{role: "user", content: "Hello world"}],
           });
-        const message = completion;
-        console.log(message.data.choices[0].message);
-        res.status(200);
+        const message = completion.data.choices[0].message
+        res.status(200).json(message);
     } catch (error) {
         console.error(error);
         res.status(500).send('Internal Server Error');
