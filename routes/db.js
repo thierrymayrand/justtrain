@@ -864,8 +864,9 @@ const apiKey = process.env.OPENAI_API_KEY;
 
 
 router.get('/chatcompletion', async (req, res) => {
-    const wodId = req.query.id;
-    console.log(apiKey)
+    
+    const inputString =  req.query.inputString;
+    console.log("Input string" + " " + inputString)
     const configuration = new Configuration({
         apiKey: apiKey,
       });
