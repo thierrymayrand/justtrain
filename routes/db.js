@@ -874,7 +874,11 @@ router.get('/chatcompletion', async (req, res) => {
     try {
         const completion = await openai.createChatCompletion({
             model: "gpt-3.5-turbo",
-            messages: [{role: "user", content: "Hello world"}],
+            messages: [{role: "system", content: `Tu es le meilleure entraineur de crossfit au monde. Tu donne des programme d'entrainement clair et detailler. 
+            Je veux un calendrier d'exercices avec 7 jours par semaine  d'entrainement. 
+            Tout les jours il faut au moins 5 exercises. J'ai acces seulement a une salle de crossfit. Oublie pas de me donner le details pour chaques exercices`},
+            {"role": "user", "content": `${inputString}`}
+        ],
           });
         const message = completion.data.choices[0].message
         res.status(200).json(message);
