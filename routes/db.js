@@ -864,7 +864,7 @@ const apiKey = process.env.OPENAI_API_KEY;
 
 
 router.get('/chatcompletion', async (req, res) => {
-    
+    req.setTimeout(120000);
     const inputString =  req.query.inputString;
     console.log("Input string" + " " + inputString)
     const configuration = new Configuration({
