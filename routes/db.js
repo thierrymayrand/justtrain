@@ -881,6 +881,7 @@ router.get('/chatcompletion', async (req, res) => {
         ],
           });
         const message = completion.data.choices[0].message
+        console.log(message)
         res.status(200).json(message);
     } catch (error) {
         console.error(error);
