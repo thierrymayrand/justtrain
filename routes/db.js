@@ -879,7 +879,11 @@ router.get('/chatcompletion', async (req, res) => {
             Tout les jours il faut au moins 5 exercises. J'ai acces seulement a une salle de crossfit. Oublie pas de me donner le details pour chaques exercices`},
             {"role": "user", "content": `${inputString}`}
         ],
+        stream : True
           });
+          completion.forEach(chunk => {
+            console.log(chunk)
+          })
         const message = completion.data.choices[0].message
         console.log(message)
         res.status(200).json(message);
